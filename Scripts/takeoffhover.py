@@ -1,14 +1,16 @@
-from dronekit import connect, VehicleMode, LocationGlobalRelative, LocationGlobal, Command
+from dronekit import connect, VehicleMode, LocationGlobalRelative, LocationGlobal
 from pymavlink import mavutil
 import time
 import keyboard
 
-
 #Connect to Vehicle
-print("Connecting to vehicle")
-vehicle = connect('udp:127.0.0.1:14551')
 
+cw = True
+yaw_Val = 10
 
+connectionString = "192.168.246.47:14550"
+print(f"Connecting to vehicle on {connectionString}")
+vehicle = connect(connectionString)
 
 def arm_and_takeoff(alt):
     while not vehicle.is_armable:
@@ -22,19 +24,38 @@ def arm_and_takeoff(alt):
         time.sleep(1)
     print("Taking off!")
     vehicle.simple_takeoff(alt)
-    time.sleep(5)
+    
+def set_yaw(heading, cw):
+    if cw == True:
+        cw = 1
+    else:
+        cw = -1
+    msg = vehicle.message_factory.command_long_encode(
+        0,0,
+        mavutil.mavlink.MAV_CMD_CONDITION_YAW,
+        0,
+        heading,    #heading passed
+        0,
+        cw,
+        1,  #1 for relative #0 for absolute
+        0,0,0)
+    vehicle.send_mavlink(msg)
 
 arm_and_takeoff(10)
 
 while True:
-    altitude = vehicle.location.global_relative_frame.alt
-    time.sleep(0.5)
-    altitude2 = vehicle.location.global_relative_frame.alt
-    descentrate = (altitude2 - altitude) * 2
+    if keyboard.is_pressed("w"):
+        cw = True
+        set_yaw(yaw_Val, cw)
+    if keyboard.is_pressed("s"):
+        cw = False
+        set_yaw(yaw_Val, cw)
+    if keyboard.is_pressed("l"):
+        vehicle.mode = "LAND" 
+        break
     
-    print(descentrate)
-    if keyboard.is_pressed('l'):
-        vehicle.mode = VehicleMode("LAND")
+    
+
 
 
             

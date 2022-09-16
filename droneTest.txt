@@ -1,22 +1,20 @@
-command #1:
-dronekit-sitl copter --home=43.070052,-79.141942,0,180
+CHECK IP ADDRESS!!
 
-command #2
-Home
-mavproxy.py --master tcp:127.0.0.1:5760 --out udp:127.0.0.1:14551 --out udp:192.168.1.2:14550
-
-School
-mavproxy.py --master tcp:127.0.0.1:5760 --out udp:127.0.0.1:14551 --out udp:10.22.210.170:14550
-
-launch mission planner: 
+mission planner: 
 cd ~/missionplanner;mono MissionPlanner.exe
 
+Workflow:
 
-Gazebo
+Run Simulation
+Terminal 1
+gazebo --verbose ~/ardupilot_gazebo/worlds/iris_arducopter_runway.world
 
-gazebo --verbose ~/ardupilot_gazebo/worlds/iris_arducopter_runway.world 
-
+Terminal 2
 cd ~/ardupilot/ArduCopter/
 sim_vehicle.py -v ArduCopter -f gazebo-iris --console
+or
+sim_vehicle.py -v ArduCopter -L SCHOOL 
 
-mode GUIDED
+if script is not connecting:
+type "output" to see what addresses mavlink messages are sent to
+"output add" current ip address from ipconfig (cmd) using port :14550
