@@ -3,10 +3,11 @@
 import time
 from dronekit import VehicleMode, connect, LocationGlobalRelative, Command, LocationGlobal
 from pymavlink import mavutil
-import Tkinter as tk
+import tkinter as tk
 
-print("Connecting to vehicle")
-vehicle = connect('udp:127.0.0.1:14551')
+connectionString = input("Connect to: ") or "192.168.1.4:14550"
+print(f"Connecting to vehicle on {connectionString}")
+vehicle = connect(connectionString)
 
 #Parameters:
 gndspd = 2 #m/s

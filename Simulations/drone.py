@@ -1,13 +1,7 @@
-from cProfile import run
-from pkgutil import walk_packages
 from time import sleep
-from tkinter import CENTER
-from turtle import speed
-from numpy import angle, arctan, diff
 import pygame
 import os
 import math
-import time
 
 #Variable Assignments
 pygame.init()

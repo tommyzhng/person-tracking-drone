@@ -7,7 +7,7 @@ from pymavlink import mavutil
 #Option Parsing for Connection String
 import argparse
 parser = argparse.ArgumentParser(description='commands')
-parser.add_argument('--connect', default='127.0.0.1:14551')
+parser.add_argument('--connect', default='192.168.1.4:14550')
 
 args = parser.parse_args()
 
