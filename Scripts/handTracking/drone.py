@@ -1,42 +1,21 @@
 from dronekit import connect, VehicleMode
 from pymavlink import mavutil
-import time
-import keyboard
-import math
 
+import socket
+from _handTracker import HandDetector
+
+import time
+import cvzone
 import cv2 as cv
-import mediapipe as mp
 
 #Hands
-mpHands = mp.solutions.hands
-mpDraw = mp.solutions.drawing_utils
-hands = mpHands.Hands(max_num_hands=1, min_detection_confidence=0.5, min_tracking_confidence=0.5)
-
+detect = HandDetector(maxHands=1)
 #OpenCV
 capture = cv.VideoCapture(0, cv.CAP_DSHOW)
-
+fpsReader = cvzone.FPS()
 #Drone
 cw = True
 yaw_value = 0
-
-def trackHands(frame, mpDraw, mpHands):
-    frame.flags.writeable = False
-    frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-
-    result = hands.process(frame)
-    frame.flags.writeable = True
-    frame = cv.cvtColor(frame, cv.COLOR_RGB2BGR)
-
-    if result.multi_hand_landmarks:
-        for landmarks in result.multi_hand_landmarks:
-            for index, landmark in enumerate(landmarks.landmark):
-                if index == 9:
-                    yaw_value = 2*(landmark.x-0.5)
-            mpDraw.draw_landmarks(frame, landmarks, mpHands.HAND_CONNECTIONS)
-    else:
-        yaw_value = 0
-
-    return yaw_value, frame
 
 def arm_and_takeoff(alt):
     while not vehicle.is_armable:
@@ -50,43 +29,48 @@ def arm_and_takeoff(alt):
         time.sleep(1)
     print("Taking off!")
     vehicle.simple_takeoff(alt)
-
-def set_yaw(heading):
-    if heading < 0:
-        cw = 1
-        heading = heading / -1
-    else:
+def set_yaw(speed, cw=1, heading = 180):
+    if speed == 0:
+        heading = 0
+    elif speed > 0:
         cw = -1
+    else:
+        cw = 1
+        speed = int(speed / -1)
     msg = vehicle.message_factory.command_long_encode(
         0,0,
         mavutil.mavlink.MAV_CMD_CONDITION_YAW,
         0,
         heading,    #heading passed
-        0,
+        speed,
         cw,
         1,  #1 for relative #0 for absolute
         0,0,0)
     vehicle.send_mavlink(msg)
 
-connectionString = "192.168.1.4:14550"
+connectionString = socket.gethostbyname_ex(socket.gethostname())[-1][1] + ":14550"
+
 print(f"Connecting to vehicle on {connectionString}")
 vehicle = connect(connectionString)
 arm_and_takeoff(10)
 
 while True:
-    #read frame
+    #Read frame
     success, frame = capture.read()
     frame = cv.resize(frame, (640,480))
     frame = cv.flip(frame, 1)
-    yaw_Value, frame = trackHands(frame, mpDraw, mpHands)
+    fps, frame = fpsReader.update(frame,pos=(50,80),color=(0,255,0),scale=5,thickness=5)
+
+    yaw_Value, frame = detect.trackHands(frame) #detect hands
 
     #Drone Functions
-    print(yaw_Value*60)
-    set_yaw(yaw_Value*60)
+    set_yaw(int(yaw_Value*180))
 
     #Break
     cv.imshow("test", frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
+        vehicle.mode = VehicleMode("LAND")
         break
+
 capture.release()
 cv.destroyAllWindows()
