@@ -50,9 +50,9 @@ class BodyDetector:
             cv.line(frame, (320, 240), (int(centerHuman[0]*640), int(centerHuman[1]*480)), (255, 255, 0), 10)
 
             #Find X Y differences           #X                                      #Y
-            differences = ((0.5 - centerHuman[0]), (0.5 - centerHuman[1]))
-            cv.putText(frame, f"X Diff = {round(differences[0] * 100, 3)}%", (340, 240), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-            cv.putText(frame, f"Y Diff = {round(differences[1] * 100, 3)}%", (340, 270), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+            differences = ((0.5 - centerHuman[0]), (centerHuman[1] - 0.5))
+            cv.putText(frame, f"X Delta = {round(differences[0] * 100, 3)}%", (340, 240), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
+            cv.putText(frame, f"Y Delta = {round(differences[1] * 100, 3)}%", (340, 270), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
         else:
             differences = (0, 0)
 
