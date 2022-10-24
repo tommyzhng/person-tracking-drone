@@ -44,19 +44,6 @@ class DroneFunctions:
             0,0,0)
         self.vehicle.send_mavlink(msg)
 
-    def altitudeY(self):
-        spdType = 3 if self.yDiff < 0 else 2
-        self.yDiff = abs(self.yDiff)
-        print(f"{self.yDiff} Speed Type: {spdType}")
-        msg = self.vehicle.message_factory.command_long_encode(
-            0,0,
-            mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,
-            0,
-            spdType,
-            self.yDiff,
-            0,0,0,0,0)
-        self.vehicle.send_mavlink(msg)
-
         
 
 
