@@ -12,8 +12,7 @@ capture = Tracker()
 #Main Loop
 while True:
     frame = capture.read()
-    frame = cv.flip(frame, 1)
-
+    frame = capture.process(frame=frame)
 
     cv.imshow("Body Tracking", frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
