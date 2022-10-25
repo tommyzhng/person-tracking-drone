@@ -104,12 +104,11 @@ class Tracker():
                 #Draw a line connecting the two points
                 cv.line(frame, (240, 320), (int(center[0]), int(center[1])), (255, 255, 0), 10)
 
-                #Find X Y differences           #X                                      #Y
-                differences = ((0.5 - center[0]/480), (center[1]/640 - 0.5))
-                cv.putText(frame, f"X Delta = {round(differences[0] * 100, 3)}%", (340, 240), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
-                cv.putText(frame, f"Y Delta = {round(differences[1] * 100, 3)}%", (340, 270), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
+                #Find X Y differences           only need #X value for yaw
+                differences = ((0.5 - center[0]/480))
+                cv.putText(frame, f"X Delta = {round(differences * 100, 2)}%", (140, 360), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
             else:
-                differences = (0, 0)
+                differences = 0
 
             return differences
     
