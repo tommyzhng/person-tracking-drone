@@ -9,7 +9,6 @@ class Drone:
         connectionString = socket.gethostbyname_ex(socket.gethostname())[-1][1] + ":14550"
         print(connectionString)
         self.vehicle = connect(connectionString)
-        self.signal = 1500
 
     def arm_and_takeoff(self, alt):
         while not self.vehicle.is_armable:
