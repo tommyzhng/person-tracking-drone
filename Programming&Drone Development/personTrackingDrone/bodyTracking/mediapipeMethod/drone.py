@@ -24,9 +24,9 @@ class DroneFunctions:
         self.vehicle.simple_takeoff(alt)
 
     def move(self, differences):
-        self.xDiff = differences[0] * 360
+        self.xDiff = differences[0]*300
         self.yDiff = differences[1]
-        self.altitudeY()
+        self.yawX()
         
     def yawX(self, heading = 180):
         rotDirect = -1 if self.xDiff < 0 else 1
@@ -43,6 +43,7 @@ class DroneFunctions:
             1,
             0,0,0)
         self.vehicle.send_mavlink(msg)
+
 
         
 
