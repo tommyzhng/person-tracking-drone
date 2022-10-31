@@ -9,17 +9,19 @@ tracker = Tracker()
 drone = DroneFunctions()
 
 #Drone
-drone.arm_and_takeoff(5)
+drone.arm_and_takeoff(2)
 
 #Main Loop
 while True:
     frame = capture.frame
-    frame, differences = tracker.process(frame=frame)
-    drone.move(differences)
+    frame, differences, area = tracker.process(frame=frame)
+    drone.move(differences, area)
+
+    print(area)
 
     cv.imshow("frame", frame)
 
-    if cv.waitKey(1) and drone.vehicle.mode == VehicleMode("LAND"):
-        drone.move(0)
+    if cv.waitKey(1) and drone.vehicle.mode == VehicleMode("LAND"):#& 0xFF == ord('q'): #
+        drone.move(0, 0)
         capture.stop()
         break

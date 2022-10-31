@@ -6,7 +6,7 @@ import time
 
 class DroneFunctions:
     def __init__(self):
-        connectionString =  "192.168.1.9:14550"
+        connectionString = "192.168.45.246:14550"
         print(connectionString)
         self.vehicle = connect(connectionString)
 
@@ -26,27 +26,24 @@ class DroneFunctions:
         while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
             time.sleep(1)
 
-    def move(self, differences):
-        self.xDiff = differences * 300
-        self.yawX()
-        
-    def yawX(self, heading = 180):
-        rotDirect = -1 if self.xDiff < 0 else 1
-        heading = 0 if self.xDiff == 0 else 180
-        self.xDiff = self.xDiff / -1 if rotDirect == -1 else self.xDiff
-
-        msg = self.vehicle.message_factory.command_long_encode(
-            0,0,
-            mavutil.mavlink.MAV_CMD_CONDITION_YAW,
+    def move(self, xDiff, area):
+        velocity = self.fwd_movement(area)
+        xDiff = xDiff if xDiff > 0.075 or xDiff < -0.075 else 0
+        msg = self.vehicle.message_factory.set_position_target_local_ned_encode(
             0,
-            heading,
-            self.xDiff,
-            rotDirect,
-            1,
-            0,0,0)
+            0, 0,
+            mavutil.mavlink.MAV_FRAME_BODY_NED,
+            0b011111000111,
+            0, 0, 0,
+            velocity, 0, 0,
+            0, 0, 0,
+            0, (xDiff/2))
         self.vehicle.send_mavlink(msg)
-
-        
-
-
-
+    
+    def fwd_movement(self, area):
+            if area < 40 and area > 0:
+                return 0.2
+            elif area > 50:
+                return -0.2
+            else:
+                return 0
