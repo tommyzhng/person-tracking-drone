@@ -29,16 +29,21 @@ class BodyDetector:
                 y.append(lms.y)
             x_min, x_max = max(x), min(x)
             y_max, y_min = max(y), min(y)
-            cv.rectangle(frame, (int(x_min*640), int(y_min*480)), 
+            cv.rectangle(frame, (int(x_min*640), int(y_min*480)),
                                 (int(x_max*640), int(y_max*480)), (0, 255, 0), 2)
 
             #Draw a Circle representing center of the body
             center = round((x_max + x_min)/2, 3), round((y_max + y_min)/2, 3) #Blue
             cv.circle(frame, (int(center[0]*640), int(center[1]*480)), 15, (0, 0, 255), -1)
             self.mpDraw.draw_landmarks(frame, result.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
+
+             #get area:
+            area = abs(100*(y_max-y_min))
         else:
             center = (0, 0)
-        return frame, center
+            area = 0
+        
+        return frame, center, area
     
     def distanceFromCenter(self, frame, centerHuman):
         #Center
@@ -57,3 +62,5 @@ class BodyDetector:
             differences = (0, 0)
 
         return differences
+
+        
