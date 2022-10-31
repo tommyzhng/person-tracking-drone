@@ -8,18 +8,18 @@ detect = BodyDetector()
 drone = DroneFunctions()
 
 #Drone
-drone.arm_and_takeoff(5)
+drone.arm_and_takeoff(2)
 
 #Main Loop
 while True:
     success, frame = capture.read()
     frame = cv.flip(frame, 1)
 
-    frame, centerHuman = detect.trackBody(frame)
+    frame, centerHuman, area = detect.trackBody(frame)
     differences = detect.distanceFromCenter(frame, centerHuman)
 
     #drone
-    drone.move(differences)
+    drone.move(differences, area)
 
     cv.imshow("Body Tracking", frame)
     if cv.waitKey(1) & 0xFF == ord('q'):
