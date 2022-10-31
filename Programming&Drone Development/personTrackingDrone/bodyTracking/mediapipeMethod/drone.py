@@ -39,7 +39,7 @@ class DroneFunctions:
             0, xDiff,)
         self.vehicle.send_mavlink(msg)
 
-    def fwd_movement(area):
+    def fwd_movement(self, area):
         if area < 30 and area > 0:
             return 0.2
         elif area > 40:

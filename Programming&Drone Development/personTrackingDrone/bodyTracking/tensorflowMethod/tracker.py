@@ -28,7 +28,7 @@ class GetVideo(): #get video from another thread to reduce latency
 
 class Tracker():
     def __init__(self) -> None:
-        #if this is running on raspi, use import from rflite runtime
+        #if this is running on raspi, use import from rflite runtime, or else use windows interpreter
         if importlib.util.find_spec('tflite_runtime'):
             from tflite_runtime.interpreter import Interpreter
         else:
@@ -47,7 +47,7 @@ class Tracker():
 
         self.input_det = self.interpreter.get_input_details()
         self.output_det = self.interpreter.get_output_details()
-        #height and width from "'shape': array([  1, 300, 300,   3])"
+        #height and width from input det: "'shape': array([  1, 300, 300,   3])"
         self.height = 300
         self.width = 300
         
@@ -58,7 +58,7 @@ class Tracker():
         frame = cv.resize(frame, (640,480))
         frame = cv.flip(frame, 1)
         frame = cv.rotate(frame, cv.ROTATE_90_CLOCKWISE)
-        t1 = cv.getTickCount()
+        t1 = cv.getTickCount() #initial frame
         
         framergb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)     ##create another frame to process on
         frame1 = cv.resize(framergb, (self.width, self.height))
@@ -75,8 +75,9 @@ class Tracker():
         confidence = self.interpreter.get_tensor(self.output_det[2]['index'])[0] 
 
         center = (0,0)
+        area = 0
 
-        if (self.labels[int(classes[0])] == "person"):
+        if (self.labels[int(classes[0])] == "person"): #run if detected person
             if (confidence[0] > 0.4 and confidence[0] < 1.0): #if confidence is high, run the bounding boxes
                     minx, maxx = int(max(1,(bbox[0][1] * 480))), int(min(640,(bbox[0][3] * 480)))
                     miny, maxy = int(max(1,(bbox[0][0] * 640))), int(min(640,(bbox[0][2] * 640)))
@@ -84,16 +85,18 @@ class Tracker():
 
                     cv.circle(frame, (int(center[0]), int(center[1])), 15, (0, 0, 255), -1)
                     cv.rectangle(frame, (minx,miny), (maxx, maxy), (0,255,0), 2)
+                    area = abs(100*((maxy/640)-(miny/640)))
+
 
         differences = self.distanceFromCenter(frame, center)
-
         cv.putText(frame,f'FPS: {round(self.frame_rate_calc)}',(30,50),cv.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1,cv.LINE_AA)
+        
+        #calculate frame rate for next loop
         t2 = cv.getTickCount()
         time1 = (t2-t1)/self.freq
         self.frame_rate_calc= 1/time1
 
-        
-        return frame, differences
+        return frame, differences, area
 
     def distanceFromCenter(self, frame, center):
             #Center
