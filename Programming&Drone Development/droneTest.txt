@@ -22,7 +22,7 @@ type "output" to see what addresses mavlink messages are sent to
 output add 10.22.217.132:14550
 
 
-###test
+###test 
     def calculate_throttle(self):
         distance = self.vehicle.location.global_relative_frame.alt 
         target_velocity = distance / 3
