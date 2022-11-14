@@ -1,7 +1,7 @@
 import cv2 as cv
 from tracker import GetVideo, Tracker
-from drone import DroneFunctions
-from dronekit import VehicleMode
+from drone import DroneFunctions, VehicleMode
+import time
 
 #OpenCV Init
 capture = GetVideo().start()
@@ -9,15 +9,15 @@ tracker = Tracker()
 drone = DroneFunctions()
 
 #Drone
-drone.arm_and_takeoff(2)
+drone.arm_and_takeoff(1.5)
+time.sleep(2)
 
 #Main Loop
 while True:
     frame = capture.frame
     frame, differences, area = tracker.process(frame=frame)
-    drone.move(differences, area)
-
-    print(area)
+    drone.move(differences, 0)
+    print(f"{round(differences*100, 3)} %")
 
     cv.imshow("frame", frame)
 

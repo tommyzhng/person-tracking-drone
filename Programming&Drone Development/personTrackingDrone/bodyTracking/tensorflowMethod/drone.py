@@ -1,12 +1,10 @@
 from dronekit import connect, VehicleMode
 from pymavlink import mavutil
-
-import socket
 import time
 
 class DroneFunctions:
     def __init__(self):
-        connectionString = "192.168.45.246:14550"
+        connectionString = "192.168.112.246:14550"
         print(connectionString)
         self.vehicle = connect(connectionString)
 
@@ -28,7 +26,7 @@ class DroneFunctions:
 
     def move(self, xDiff, area):
         velocity = self.fwd_movement(area)
-        xDiff = xDiff if xDiff > 0.075 or xDiff < -0.075 else 0
+        xDiff = xDiff if xDiff > 0.1 or xDiff < -0.1 else 0
         msg = self.vehicle.message_factory.set_position_target_local_ned_encode(
             0,
             0, 0,
@@ -37,7 +35,7 @@ class DroneFunctions:
             0, 0, 0,
             velocity, 0, 0,
             0, 0, 0,
-            0, (xDiff/2))
+            0, (xDiff/1.5))
         self.vehicle.send_mavlink(msg)
     
     def fwd_movement(self, area):
