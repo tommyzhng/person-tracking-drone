@@ -4,7 +4,6 @@ import time
 drone = Drone()
 
 drone.arm_and_takeoff(50)
-#drone.vehicle.mode = VehicleMode("STABILIZE")
 while drone.vehicle.armed == True:
     if drone.vehicle.location.global_relative_frame.alt >= 45:
         drone.send_acceleration(freefall=True)
@@ -13,4 +12,3 @@ while drone.vehicle.armed == True:
         if drone.vehicle.location.global_relative_frame.alt <= 1:
             break
 drone.vehicle.mode = VehicleMode("LAND")
-        
