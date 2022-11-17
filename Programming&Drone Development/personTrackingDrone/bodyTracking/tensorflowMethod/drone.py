@@ -4,9 +4,9 @@ import time
 
 class DroneFunctions:
     def __init__(self):
-        connectionString = "192.168.112.246:14550"
+        connectionString = "/dev/ttyAMA0"
         print(connectionString)
-        self.vehicle = connect(connectionString)
+        self.vehicle = connect(connectionString, baud=921600)
 
     def arm_and_takeoff(self, alt):
         while not self.vehicle.is_armable:
@@ -19,10 +19,9 @@ class DroneFunctions:
             print("Waiting to arm")
             time.sleep(1)
         print("Taking off!")
-        self.vehicle.simple_takeoff(alt)
-
-        while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
-            time.sleep(1)
+        #self.vehicle.simple_takeoff(alt)
+        #while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
+            #time.sleep(1)
 
     def move(self, xDiff, area):
         velocity = self.fwd_movement(area)

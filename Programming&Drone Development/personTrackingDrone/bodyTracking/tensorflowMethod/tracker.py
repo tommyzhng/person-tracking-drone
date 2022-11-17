@@ -8,7 +8,7 @@ import os
 
 class GetVideo(): #get video from another thread to reduce latency
     def __init__(self) -> None:
-        self.stream = cv.VideoCapture(0)
+        self.stream = cv.VideoCapture(-1)
         (self.success, self.frame) = self.stream.read() #read the first frame
         self.stopped = False
 
@@ -24,6 +24,8 @@ class GetVideo(): #get video from another thread to reduce latency
                 (self.success, self.frame) = self.stream.read()
     def stop(self):
         self.stopped = True
+        self.stream.release()
+        cv.destroyAllWindows()
 
 
 class Tracker():
