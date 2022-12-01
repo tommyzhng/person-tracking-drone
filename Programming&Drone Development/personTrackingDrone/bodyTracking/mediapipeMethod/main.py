@@ -5,10 +5,10 @@ from drone import DroneFunctions
 #OpenCV
 capture = cv.VideoCapture(0, cv.CAP_DSHOW)
 detect = BodyDetector()
-drone = DroneFunctions()
+#drone = DroneFunctions()
 
 #Drone
-drone.arm_and_takeoff(2)
+#drone.arm_and_takeoff(2)
 
 #Main Loop
 while True:
@@ -19,7 +19,7 @@ while True:
     differences = detect.distanceFromCenter(frame, centerHuman)
 
     #drone
-    drone.move(differences, area)
+    #drone.move(differences, area)
 
     cv.imshow("Body Tracking", frame)
     if cv.waitKey(1) & 0xFF == ord('q'):

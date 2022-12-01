@@ -29,12 +29,12 @@ class BodyDetector:
                 y.append(lms.y)
             x_min, x_max = max(x), min(x)
             y_max, y_min = max(y), min(y)
-            cv.rectangle(frame, (int(x_min*640), int(y_min*480)),
-                                (int(x_max*640), int(y_max*480)), (0, 255, 0), 2)
+            cv.rectangle(frame, (int(x_min*int(frame.shape[1])), int(y_min*int(frame.shape[0]))),
+                                (int(x_max*int(frame.shape[1])), int(y_max*int(frame.shape[0]))), (0, 255, 0), 2)
 
             #Draw a Circle representing center of the body
             center = round((x_max + x_min)/2, 3), round((y_max + y_min)/2, 3) #Blue
-            cv.circle(frame, (int(center[0]*640), int(center[1]*480)), 15, (0, 0, 255), -1)
+            cv.circle(frame, (int(center[0]*int(frame.shape[1])), int(center[1]*int(frame.shape[0]))), 15, (0, 0, 255), -1)
             self.mpDraw.draw_landmarks(frame, result.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
 
              #get area:
@@ -52,12 +52,12 @@ class BodyDetector:
             cv.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 15, (255, 0, 0), -1)
 
             #Draw a line connecting the two points
-            cv.line(frame, (320, 240), (int(centerHuman[0]*640), int(centerHuman[1]*480)), (255, 255, 0), 10)
+            cv.line(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), (int(centerHuman[0]*int(frame.shape[1])), int(centerHuman[1]*int(frame.shape[0]))), (255, 255, 0), 10)
 
             #Find X Y differences           #X                                      #Y
             differences = ((0.5 - centerHuman[0]), (centerHuman[1] - 0.5))
-            cv.putText(frame, f"X Delta = {round(differences[0] * 100, 3)}%", (340, 240), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
-            cv.putText(frame, f"Y Delta = {round(differences[1] * 100, 3)}%", (340, 270), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
+            cv.putText(frame, f"X Delta = {round(differences[0] * 100, 3)}%", (int(frame.shape[1]/2) + 20, int(frame.shape[0]/2)-15), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
+            cv.putText(frame, f"Y Delta = {round(differences[1] * 100, 3)}%", (int(frame.shape[1]/2) + 20, int(frame.shape[0]/2)+15), cv.FONT_HERSHEY_SIMPLEX, 0.65, (0, 255, 0), 2)
         else:
             differences = (0, 0)
 
