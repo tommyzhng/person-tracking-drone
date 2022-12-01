@@ -10,6 +10,6 @@ The current two projects I have coded as of Dec 1st 2022:
 The code is tested using arducopter's SITL along with the Gazebo simulator. This reduces error and chance of failure in real life.
 
 <p align="center">
-  <img width="50%" height="50%" src="https://github.com/tommyzhng/drone/blob/master/readme%20gifs/gazebo%20demo.gif">
+  <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/readme%20gifs/gazebo%20demo.gif">
 </p>
 
