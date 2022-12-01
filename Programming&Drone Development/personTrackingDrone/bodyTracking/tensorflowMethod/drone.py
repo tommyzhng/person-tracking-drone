@@ -19,13 +19,13 @@ class DroneFunctions:
             print("Waiting to arm")
             time.sleep(1)
         print("Taking off!")
-        #self.vehicle.simple_takeoff(alt)
-        #while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
-            #time.sleep(1)
+        self.vehicle.simple_takeoff(alt)
+        while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
+            time.sleep(1)
 
     def move(self, xDiff, area):
         velocity = self.fwd_movement(area)
-        xDiff = xDiff if xDiff > 0.1 or xDiff < -0.1 else 0
+        xDiff = xDiff if xDiff > 0.075 or xDiff < -0.075 else 0
         msg = self.vehicle.message_factory.set_position_target_local_ned_encode(
             0,
             0, 0,
@@ -34,7 +34,7 @@ class DroneFunctions:
             0, 0, 0,
             velocity, 0, 0,
             0, 0, 0,
-            0, (xDiff/1.5))
+            0, (xDiff/1.25))
         self.vehicle.send_mavlink(msg)
     
     def fwd_movement(self, area):

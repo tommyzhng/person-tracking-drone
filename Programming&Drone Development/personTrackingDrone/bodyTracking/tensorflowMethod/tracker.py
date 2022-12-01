@@ -8,7 +8,7 @@ import os
 
 class GetVideo(): #get video from another thread to reduce latency
     def __init__(self) -> None:
-        self.stream = cv.VideoCapture(-1)
+        self.stream = cv.VideoCapture(0)
         (self.success, self.frame) = self.stream.read() #read the first frame
         self.stopped = False
 
