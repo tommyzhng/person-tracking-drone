@@ -28,7 +28,7 @@ The most generic description of this project is that it uses the camera on board
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing, however, I was only able to get my hands on a Raspberry Pi 4p.
 
 The code ran super slow with examples from online (1-3 fps), but I managed to optimize code to run at a stable 7 fps. 
-7 calculations per second is enough to calculate where I am in space relative to the drone: 
+7 calculations per second is enough for the computer to tell where I am in space relative to the drone: 
 
 <p align="center">
   <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/readme%20gifs/gazebo%20demo.gif">
