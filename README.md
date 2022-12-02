@@ -25,17 +25,26 @@ There are three sections:
 ## Explaination for each project
 ### Person Tracking / Following
 The most generic description of this project is that it uses the camera on board the drone to track and follow a person using OpenCV image recognition.
-Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing, however, I was only able to get my hands on a Raspberry Pi 4p.
+Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
 
 The code ran super slow with examples from online (1-3 fps), but I managed to optimize my code to run at a stable 7 fps with low latency using python multithreading. 
 7 calculations per second is enough for the computer to tell where I am in space relative to the drone
 
 Example simulation using gazebo:
 
-
 <p align="center">
-  <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/readme%20gifs/gazebo%20demo.gif">
+  <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20in%20gazebo.gif">
 </p>
+
+**How does it work?**
+
+The code is put together from three files, main.py, tracker.py, and drone.py. main.py is where I run the code, tracker.py is where the tracking data comes from, and drone.py contains functions to move the drone.
+
+Direction / Yaw: The code returns the center of a person by taking the average of the X coordinates of the bounding boxes. Then it calculates the percentage of pixels that it is away from the center of the screen. This is passed to a mavlink function (yaw rate) which turns the drone to face the person.
+
+Forward / Backwards Movement: Because I do not have access to a lidar sensor, I can only use the image to determine how far a person is. The code calculates a relative area using only the Y distance of the bounding box (maxy-miny * 1). This is a better method than multiplying by the X distance because the X distance can be easily manipulated by spreading arms. The area is passed to a logic function telling the drone to stop, go forwards or backwards.
+
+
 
 ### Hoverslam / Suicide Burn
 
