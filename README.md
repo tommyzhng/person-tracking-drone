@@ -5,8 +5,6 @@ The current two projects I have coded as of Dec 1st 2022:
 - Person tracking / following drone
 - Hoverslam Drone (Innapplicable to real life due to physical limitations like vortex ring state)
 
-
-
 The code is tested using arducopter's SITL along with the Gazebo simulator. This reduces error and chance of failure in real life:
 
 <p align="center">
@@ -25,7 +23,7 @@ There are three sections:
 ## Explaination for each project
 ### Person Tracking / Following
 
-<a href="https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/personTrackingDrone" target="_blank">external link</a>
+[Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/personTrackingDrone)
 
 The most generic description of this project is that it uses the camera on board the drone to track and follow a person using OpenCV image recognition.
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
@@ -47,7 +45,9 @@ Direction / Yaw: The code returns the center of a person by taking the average o
 
 Forward / Backwards Movement: Because I do not have access to a lidar sensor, I can only use the image to determine how far a person is. The code calculates a relative area using only the Y distance of the bounding box (maxy-miny * 1). This is a better method than multiplying by the X distance because the X distance can be easily manipulated by spreading arms. The area is passed to a logic function telling the drone to stop, go forwards or backwards.
 
-
+<p align="center">
+  <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20flowchart.png">
+</p>
 
 ### Hoverslam / Suicide Burn
 
