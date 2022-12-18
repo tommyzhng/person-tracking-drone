@@ -50,6 +50,10 @@ Logic Flowchart (Click to enlarge)
   <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20flowchart.png">
 </p>
 
+<div align="center">
+  <video src="myvideo.mp4" width=400/>
+<div/>
+
 ### Hoverslam / Suicide Burn
 
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/hoverslamDrone)
