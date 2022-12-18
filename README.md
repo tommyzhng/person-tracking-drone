@@ -24,6 +24,9 @@ There are three sections:
 
 ## Explaination for each project
 ### Person Tracking / Following
+
+<a href="https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/personTrackingDrone" target="_blank">external link</a>
+
 The most generic description of this project is that it uses the camera on board the drone to track and follow a person using OpenCV image recognition.
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
 
