@@ -61,4 +61,11 @@ Logic Flowchart (Click to enlarge)
 
 ### Hoverslam / Suicide Burn
 
+For this project, I wanted to see if a Space-X style hoverslam would be possible on a quad-copter by only using acceleration formulae that I learned in Grade 11 Physics class. This would greatly improve landing efficiency and speed. However, after finishing the code, I found that physical limitations such as vortex ring state was a factor that would tear my project into pieces (quite literally). Vortex ring state is a condition when a vehicle is descending fast into its own downwash, resulting in an inability to produce lift. A fast descent is one of the main parts of a hoverslam, so I knew it would not work in real life. 
+
+As a result, this project was entirely simulated within the Gazebo virtual environment, where vortex ring state did not affect the drone much (as can be seen in the video below).
+
+
+
+
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/hoverslamDrone)
