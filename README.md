@@ -37,6 +37,7 @@ Example simulation using gazebo:
   <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20in%20gazebo.gif">
 </p>
 
+
 **How does it work?**
 
 The code is put together from three files, main.py, tracker.py, and drone.py. main.py is where I run the code, tracker.py is where the tracking data comes from, and drone.py contains functions to move the drone.
@@ -45,14 +46,18 @@ Direction / Yaw: The code returns the center of a person by taking the average o
 
 Forward / Backwards Movement: Because I do not have access to a lidar sensor, I can only use the image to determine how far a person is. The code calculates a relative area using only the Y distance of the bounding box (maxy-miny * 1). This is a better method than multiplying by the X distance because the X distance can be easily manipulated by spreading arms. The area is passed to a logic function telling the drone to stop, go forwards or backwards.
 
+**Person Tracking Demo:** 
+
+[Full Video](https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/7%20yaw%20tracking%20person.mp4)
+
+<p align="center">
+  <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20demo.gif">
+</p>
+
 Logic Flowchart (Click to enlarge)
 <p align="center">
   <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20flowchart.png">
 </p>
-
-<div align="center">
-  <video src="myvideo.mp4" width=400/>
-<div/>
 
 ### Hoverslam / Suicide Burn
 
