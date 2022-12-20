@@ -25,7 +25,7 @@ There are three sections:
 
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/personTrackingDrone)
 
-The most generic description of this project is that it uses the camera on board the drone to track and follow a person using OpenCV image recognition.
+This project uses the camera on board the drone to track and follow a person using OpenCV image recognition.
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
 
 The code ran super slow with examples from online (1-3 fps), but I managed to optimize my code to run at a stable 7 fps with low latency using python multithreading. 
