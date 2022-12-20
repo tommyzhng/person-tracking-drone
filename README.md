@@ -25,7 +25,7 @@ There are three sections:
 
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/personTrackingDrone)
 
-The most generic description of this project is that it uses the camera on board the drone to track and follow a person using OpenCV image recognition.
+This project uses the camera on board the drone to track and follow a person using OpenCV image recognition.
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
 
 The code ran super slow with examples from online (1-3 fps), but I managed to optimize my code to run at a stable 7 fps with low latency using python multithreading. 
@@ -62,3 +62,11 @@ Logic Flowchart (Click to enlarge)
 ### Hoverslam / Suicide Burn
 
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/hoverslamDrone)
+
+For this project, I wanted to see if a Space-X style hoverslam would be possible on a quad-copter by only using acceleration formulae that I learned in Grade 11 Physics class. This would greatly improve a drone's landing efficiency and speed. However, after finishing the code, I found that physical limitations such as vortex ring state was a factor that would tear my project into pieces (quite literally). Vortex ring state is a condition when a propeller is descending fast into its own downwash, resulting in an inability to produce lift. A fast descent is one of the main parts of a hoverslam, so I knew it would not work in real life. 
+
+As a result, this project was entirely simulated within the Gazebo virtual environment, where vortex ring state did not affect the drone much (as can be seen in the video below).
+
+
+
+
