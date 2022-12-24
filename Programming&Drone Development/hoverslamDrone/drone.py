@@ -32,7 +32,8 @@ class Drone:
         d = self.vehicle.location.global_relative_frame.alt - 0.5
 
         a = ((v2**2)-(v1**2)) / (2*(d))
-        print(f"v1: {v1}, d: {d}, a: {a}")
+        print(f"v: {v1}, d: {d}, a: {a}")
+        time.sleep(0.1)
         return a
 
     def send_acceleration(self, freefall = False):
@@ -47,7 +48,3 @@ class Drone:
             0, 0, a,
             0, 0)
         self.vehicle.send_mavlink(msg) 
-
-
-    #def disarm_motor(self):
-
