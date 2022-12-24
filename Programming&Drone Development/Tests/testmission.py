@@ -1,17 +1,13 @@
-import cv2 as cv
+import os
 
-capture = cv.VideoCapture(0, cv.CAP_DSHOW)
-capture.set(3, 640)
-capture.set(4, 480)
+# Connect to the device using ADB
+os.system("adb connect <device-ip-address>")
 
-while True:
-    #read frame
-    success, frame = capture.read()
-    frame = cv.flip(frame, 2)
+# Tap the center of the screen
+os.system("adb shell input tap 500 500")
 
-    #Break
-    cv.imshow("test", frame)
-    if cv.waitKey(1) & 0xFF == ord('q'):
-        break
-capture.release()
-cv.destroyAllWindows()
+# Swipe from the center of the screen to the top-left corner
+os.system("adb shell input swipe 500 500 100 100")
+
+# Disconnect from the device
+os.system("adb disconnect")
