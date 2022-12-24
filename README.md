@@ -8,7 +8,7 @@ The current two projects I have coded as of Dec 1st 2022:
 The code is tested using arducopter's SITL along with the Gazebo simulator. This reduces error and chance of failure in real life:
 
 <p align="center">
-  <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/gazebo%20demo.gif">
+  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/gazebo%20demo.gif">
 </p>
 
 ## How to navigate this repository
@@ -34,7 +34,7 @@ The code ran super slow with examples from online (1-3 fps), but I managed to op
 Example simulation using gazebo:
 
 <p align="center">
-  <img width="70%" height="70%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20in%20gazebo.gif">
+  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20in%20gazebo.gif">
 </p>
 
 
@@ -67,5 +67,10 @@ For this project, I wanted to see if a Space-X style hoverslam would be possible
 
 As a result, this project was entirely simulated within the Gazebo virtual environment, where vortex ring state did not affect the drone much (as can be seen in the video below).
 <p align="center">
-  <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/hoverslam%20demo.gif">
+  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/hoverslam%20demo.gif">
+</p>
+
+Logic Flowchart (Click to enlarge)
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/hoverslam%20flowchart.png">
 </p>
