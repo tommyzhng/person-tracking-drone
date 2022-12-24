@@ -49,7 +49,7 @@ Forward / Backwards Movement: Because I do not have access to a lidar sensor, I 
 **Person Tracking Demo:** 
 
 [Full Video](https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/7%20yaw%20tracking%20person.mp4)
-
+(embed .gif takes some time to load)
 <p align="center">
   <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20demo.gif">
 </p>
