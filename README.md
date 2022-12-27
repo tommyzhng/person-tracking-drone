@@ -20,8 +20,8 @@ There are three sections:
 - Media
   - All the tests and pictures of the building/development process is stored here. The list is sorted by date.
 
-## Explaination for each project
-### Person Tracking / Following
+# Explaination for each project
+## Person Tracking / Following
 
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/personTrackingDrone)
 
@@ -29,7 +29,7 @@ This project uses the camera on board the drone to track and follow a person usi
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
 
 The code ran super slow with examples from online (1-3 fps), but I managed to optimize my code to run at a stable 7 fps with low latency using python multithreading. 
-7 calculations per second is enough for the computer to tell where I am in space relative to the drone
+7 calculations per second is a large improvement for the pi board to tell where I am in space relative to the drone
 
 Example simulation using gazebo:
 
@@ -59,7 +59,7 @@ Logic Flowchart (Click to enlarge)
   <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20flowchart.png">
 </p>
 
-### Hoverslam / Suicide Burn
+## Hoverslam / Suicide Burn
 
 [Access Code Location](https://github.com/tommyzhng/drone/tree/master/Programming%26Drone%20Development/hoverslamDrone)
 
