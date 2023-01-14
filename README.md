@@ -29,7 +29,7 @@ This project uses the camera on board the drone to track and follow a person usi
 Normally, people who attempt this use an Nvidia Jetson Nano because of its fast image processing. However, I was only able to get my hands on a Raspberry Pi 4b.
 
 The code ran super slow with examples from online (1-3 fps), but I managed to optimize my code to run at a stable 7 fps with low latency using python multithreading. 
-7 calculations per second is a large improvement for the pi board to tell where I am in space relative to the drone
+7 calculations per second is a large improvement for the pi board to tell where I am in space relative to the drone.
 
 Example simulation using gazebo:
 
