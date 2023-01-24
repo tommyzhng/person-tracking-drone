@@ -75,4 +75,4 @@ Logic Flowchart (Click to enlarge)
   <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/hoverslam%20flowchart.png">
 </p>
 
-I am currently working on an alternative method, where the drone travels in a circle, while calculating the acceleration, to move away from its downwash and avoid crashing.
+I am currently working on an alternative method, where the drone travels in a circle to move away from its downwash and avoid crashing.
