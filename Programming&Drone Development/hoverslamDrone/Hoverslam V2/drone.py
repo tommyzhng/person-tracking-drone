@@ -23,28 +23,34 @@ class Drone:
         print("Taking off!")
         self.vehicle.simple_takeoff(alt)
 
-        while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
-            time.sleep(1)
+        while self.vehicle.location.global_relative_frame.alt < alt-0.2:
+            time.sleep(0.5)
 
-    def calculate_target_acceleration(self):
+    def calculate_acceleration(self):
         v1 = self.vehicle.velocity[2]
         v2 = 0
-        d = self.vehicle.location.global_relative_frame.alt - 0.5
+        d = self.vehicle.location.global_relative_frame.alt - 1
 
         a = ((v2**2)-(v1**2)) / (2*(d))
         print(f"v: {v1}, d: {d}, a: {a}")
-        time.sleep(0.1)
+        
         return a
 
-    def send_acceleration(self, freefall = False):
-        a = self.calculate_target_acceleration() if not freefall else 9.8
+    def send_instruction(self):
+        if self.vehicle.location.global_relative_frame.alt < 10:
+            a = self.calculate_acceleration()
+            v = self.vehicle.velocity[2]
+        else:
+            v = 3.5
+            a = 0
         msg = self.vehicle.message_factory.set_position_target_local_ned_encode(
             0,
             0, 0,
             mavutil.mavlink.MAV_FRAME_BODY_NED,
-            0b010000110111,
+            0b010000000111,
             0, 0, 0, #position
-            0, 0, 0, #velocity
+            5, 0, v, #velocity
             0, 0, a, #acceleration
-            0, 0)    #yaw
-        self.vehicle.send_mavlink(msg) 
+            0, 1.3)    #yaw
+        self.vehicle.send_mavlink(msg)
+        time.sleep(0.1)
