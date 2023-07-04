@@ -20,53 +20,9 @@ type "output" to see what addresses mavlink messages are sent to
 "output add" current ip address from ipconfig
 
 output add 10.22.217.132:14550
-
-###test 
-    def calculate_throttle(self):
-        distance = self.vehicle.location.global_relative_frame.alt 
-        target_velocity = distance / 3
-        velocity = self.vehicle.velocity[2]
-        signal_change = 0
-
-        print (f"{velocity} and {target_velocity}")
-        if velocity < target_velocity:
-            #lower throttle
-            signal_change = int(-10 * (target_velocity-velocity))
-        else:
-            #increase throttle  
-            signal_change = int(10 * abs(target_velocity-velocity))
-        return target_velocity
-
-    def override_rc(self):
-        self.signal += self.calculate_throttle()
-        self.signal = self.clamp(int(self.signal), 1200, 1800)
-        print(f"signal {self.signal}")
-        msg = self.vehicle.message_factory.rc_channels_override_encode(
-            0,0,
-            0,0,
-            self.signal,
-            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-        self.vehicle.send_mavlink(msg)
-
-    def clamp(self, num, min_value, max_value):
-        return max(min(num, max_value), min_value)
+output add 192.168.1.4:14550
 
 
+mavproxy.py --master=/dev/ttyAMA0,921000
 
-
-
-def arm_and_takeoff(alt):
-    while not vehicle.is_armable:
-        print("waiting to arm")
-        time.sleep(1)
-    print("Arming Motors")
-    vehicle.mode = VehicleMode("GUIDED")
-    vehicle.armed = True
-    while not vehicle.armed:
-        print("waiting to arm")
-        time.sleep(1)
-    #print(f"Taking off to {alt} meters!")
-    #vehicle.simple_takeoff(alt)
-    
-    while vehicle.location.global_relative_frame.alt < alt - 0.5:
-        time.sleep(1)
+BAUD IS 921
