@@ -1,16 +1,14 @@
 # Person Tracking Drone
 
 ## How to navigate this repository
-There are three sections:
-- Preplanning&Assembly
-  - Some of my preplanning process like a spreadsheet for all my parts, first python project, etc
-- Programming&Drone Development
-  - Where all of the code for each project is stored - so far there is a hoverslam folder, a person tracking folder, and a tests folder
+
+- Mediapipe & Tensorflow Method:
+  - Different methods that can be applied for person tracking and bounding box generation
 - Media
-  - All the tests and pictures of the building/development process is stored here. The list is sorted by date.
+  - Pictures and videos of the development
 
 
-## Explaination of Project
+## Explanation of Project
 
 [Access Code Location](https://github.com/tommyzhng/Drone-Projects/tree/master/Projects/personTrackingDrone)
 
