@@ -15,6 +15,8 @@ sim_vehicle.py -v ArduCopter -f gazebo-iris --console
 or
 sim_vehicle.py -v ArduCopter -L SCHOOL --console
 
+sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --map --console
+
 if script is not connecting:
 type "output" to see what addresses mavlink messages are sent to
 "output add" current ip address from ipconfig
@@ -22,6 +24,8 @@ type "output" to see what addresses mavlink messages are sent to
 output add 10.22.217.132:14550
 output add 192.168.1.4:14550
 
+new
+output add 100.66.208.150:14550
 
 mavproxy.py --master=/dev/ttyAMA0,921000
 
