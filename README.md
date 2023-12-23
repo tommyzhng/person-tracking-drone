@@ -4,7 +4,7 @@
 
 - Mediapipe & Tensorflow Method:
   - Different methods that can be applied for person tracking and bounding box generation
-- Media
+- Videos and Pictures:
   - Pictures and videos of the development
 
 
