@@ -1,15 +1,4 @@
-# Drone Projects
-This repository contains code and videos of my drone development progress.
-
-Two projects in this repository:
-- Person tracking / following drone
-- Hoverslam Drone (Inapplicable to real life due to physical limitations like vortex ring state)
-
-The code is tested using arducopter's SITL along with the Gazebo simulator. This reduces error and chance of failure in real life:
-
-<p align="center">
-  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/gazebo%20demo.gif">
-</p>
+# Person Tracking Drone
 
 ## How to navigate this repository
 There are three sections:
@@ -20,8 +9,8 @@ There are three sections:
 - Media
   - All the tests and pictures of the building/development process is stored here. The list is sorted by date.
 
-# Explaination for each project
-## Person Tracking / Following
+
+## Explaination of Project
 
 [Access Code Location](https://github.com/tommyzhng/Drone-Projects/tree/master/Projects/personTrackingDrone)
 
@@ -38,13 +27,13 @@ Example simulation using gazebo:
 </p>
 
 
-**How does it work?**
+**How it works**
 
 The code is put together from three files, main.py, tracker.py, and drone.py. main.py is where I run the code, tracker.py is where the tracking data comes from, and drone.py contains functions to move the drone.
 
 Direction / Yaw: The code returns the center of a person by taking the average of the X coordinates of the bounding boxes. Then it calculates the percentage of pixels that it is away from the center of the screen. This is passed to a mavlink function (yaw rate) which turns the drone to face the person.
 
-Forward / Backwards Movement: Because I do not have access to a lidar sensor, I can only use the image to determine how far a person is. The code calculates a relative area using only the Y distance of the bounding box (maxy-miny * 1). This is a better method than multiplying by the X distance because the X distance can be easily manipulated by spreading arms. The area is passed to a logic function telling the drone to stop, go forwards or backwards.
+Forward / Backwards Movement: The code uses the bounding box height to determine how far a person is. It calculates a relative area using only the Y distance of the bounding box (maxy-miny * 1). The Y axis was chosen over the X distance since the latter can be easily manipulated by spreading arms. This is passed to logic (which can be improved) to determine the movement of the drone.
 
 **Person Tracking Demo:** 
 
@@ -58,21 +47,3 @@ Logic Flowchart (Click to enlarge)
 <p align="center">
   <img src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20flowchart.png">
 </p>
-
-## Hoverslam / Suicide Burn
-
-[Access Code Location](https://github.com/tommyzhng/Drone-Projects/tree/master/Projects/hoverslamDrone)
-
-For this project, I wanted to see if a Space-X style hoverslam would be possible on a quad-copter by only using acceleration formulae that I learned in Grade 11 Physics class. This would greatly improve a drone's landing efficiency and speed. However, after finishing the code, I found that physical limitations such as vortex ring state was a factor that would tear my project into pieces (quite literally). Vortex ring state is a condition when a propeller is descending fast into its own downwash, resulting in an inability to produce lift. A fast descent is one of the main parts of a hoverslam, so I knew it would not work in real life. 
-
-As a result, this project was entirely simulated within the Gazebo virtual environment, where vortex ring state did not affect the drone much (as can be seen in the video below).
-<p align="center">
-  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/hoverslam%20demo.gif">
-</p>
-
-Logic Flowchart (Click to enlarge)
-<p align="center">
-  <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/hoverslam%20flowchart.png">
-</p>
-
-I am currently working on an alternative method, where the drone travels in a circle to move away from its downwash and avoid crashing.
