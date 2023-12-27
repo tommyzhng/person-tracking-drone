@@ -1,6 +1,6 @@
 # Based off of 
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/examples/python/label_image.py
-import importlib
+import importlib.util
 from threading import Thread
 import cv2 as cv
 import numpy as np
@@ -59,14 +59,15 @@ class Tracker():
     def process(self, frame):
         frame = cv.resize(frame, (640,480))
         frame = cv.flip(frame, 1)
-        frame = cv.rotate(frame, cv.ROTATE_90_CLOCKWISE)
-        t1 = cv.getTickCount() #initial frame
-        
+        #frame = cv.rotate(frame, cv.ROTATE_90_CLOCKWISE)
+        b, h = frame.shape[1], frame.shape[0]
+        t1 = cv.getTickCount()
+
         framergb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)     ##create another frame to process on
         frame1 = cv.resize(framergb, (self.width, self.height))
         
         data = np.expand_dims(frame1, axis=0)
-        self.interpreter.set_tensor(self.input_det[0]['index'],data)
+        self.interpreter.set_tensor(self.input_det[0]['index'], data)
         self.interpreter.invoke()
 
         #Bounding box coordinates
@@ -78,16 +79,15 @@ class Tracker():
 
         center = (0,0)
         area = 0
-
         if (self.labels[int(classes[0])] == "person"): #run if detected person
             if (confidence[0] > 0.4 and confidence[0] < 1.0): #if confidence is high, run the bounding boxes
-                    minx, maxx = int(max(1,(bbox[0][1] * 480))), int(min(640,(bbox[0][3] * 480)))
-                    miny, maxy = int(max(1,(bbox[0][0] * 640))), int(min(640,(bbox[0][2] * 640)))
+                    minx, maxx = int(max(1,(bbox[0][1] * b))), int(min(b,(bbox[0][3] * b)))
+                    miny, maxy = int(max(1,(bbox[0][0] * h))), int(min(h,(bbox[0][2] * h)))
                     center = round((maxx + minx)/2, 3), round((maxy + miny)/2, 3)
 
                     cv.circle(frame, (int(center[0]), int(center[1])), 15, (0, 0, 255), -1)
                     cv.rectangle(frame, (minx,miny), (maxx, maxy), (0,255,0), 2)
-                    area = abs(100*((maxy/640)-(miny/640)))
+                    area = abs(100*((maxy/h)-(miny/h)))
 
 
         differences = self.distanceFromCenter(frame, center)
@@ -97,7 +97,6 @@ class Tracker():
         t2 = cv.getTickCount()
         time1 = (t2-t1)/self.freq
         self.frame_rate_calc= 1/time1
-
         return frame, differences, area
 
     def distanceFromCenter(self, frame, center):
@@ -107,10 +106,10 @@ class Tracker():
                 cv.circle(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)), 15, (255, 0, 0), -1)
 
                 #Draw a line connecting the two points
-                cv.line(frame, (240, 320), (int(center[0]), int(center[1])), (255, 255, 0), 10)
+                cv.line(frame, (320, 240), (int(center[0]), int(center[1])), (255, 255, 0), 10)
 
                 #Find X Y differences           only need #X value for yaw
-                differences = ((0.5 - center[0]/480))
+                differences = ((0.5 - center[0]/frame.shape[1]))
                 cv.putText(frame, f"X Delta = {round(differences * 100, 2)}%", (140, 360), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
             else:
                 differences = 0
