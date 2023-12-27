@@ -1,10 +1,14 @@
 from dronekit import connect, VehicleMode
 from pymavlink import mavutil
 import time
+import socket
 
 class DroneFunctions:
-    def __init__(self):
-        connectionString = "/dev/ttyAMA0"
+    def __init__(self, testing = False):
+        if testing == True:
+            connectionString = socket.gethostbyname_ex(socket.gethostname())[-1][1] + ":14550"
+        else:
+            connectionString = "/dev/ttyAMA0"
         print(connectionString)
         self.vehicle = connect(connectionString, baud=921600)
 
@@ -17,11 +21,12 @@ class DroneFunctions:
         self.vehicle.armed = True
         while not self.vehicle.armed:
             print("Waiting to arm")
-            time.sleep(1)
+            time.sleep(0.1)
         print("Taking off!")
         self.vehicle.simple_takeoff(alt)
         while self.vehicle.location.global_relative_frame.alt < alt - 0.5:
-            time.sleep(1)
+            print("Altitude: ", self.vehicle.location.global_relative_frame.alt)
+            time.sleep(0.01)
 
     def move(self, xDiff, area):
         velocity = self.fwd_movement(area)
