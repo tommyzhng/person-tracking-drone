@@ -80,7 +80,7 @@ class Tracker():
         center = (0,0)
         area = 0
         if (self.labels[int(classes[0])] == "person"): #run if detected person
-            if (confidence[0] > 0.4 and confidence[0] < 1.0): #if confidence is high, run the bounding boxes
+            if (confidence[0] > 0.5 and confidence[0] < 1.0): #if confidence is high, run the bounding boxes
                     minx, maxx = int(max(1,(bbox[0][1] * b))), int(min(b,(bbox[0][3] * b)))
                     miny, maxy = int(max(1,(bbox[0][0] * h))), int(min(h,(bbox[0][2] * h)))
                     center = round((maxx + minx)/2, 3), round((maxy + miny)/2, 3)
@@ -92,7 +92,7 @@ class Tracker():
 
         differences = self.distanceFromCenter(frame, center)
         cv.putText(frame,f'FPS: {round(self.frame_rate_calc)}',(30,50),cv.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1,cv.LINE_AA)
-        
+        cv.putText(frame,f'Area: {round(area, 2)}%',(30,100),cv.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1,cv.LINE_AA)
         #calculate frame rate for next loop
         t2 = cv.getTickCount()
         time1 = (t2-t1)/self.freq
@@ -110,7 +110,7 @@ class Tracker():
 
                 #Find X Y differences           only need #X value for yaw
                 differences = ((0.5 - center[0]/frame.shape[1]))
-                cv.putText(frame, f"X Delta = {round(differences * 100, 2)}%", (140, 360), cv.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                cv.putText(frame, f"X Delta = {round(differences * 100, 2)}%", (30, 150),cv.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1,cv.LINE_AA)
             else:
                 differences = 0
 
