@@ -62,3 +62,8 @@ max thrust of one motor:
 {'mavpackettype': 'LOCAL_POSITION_NED', 'time_boot_ms': 4315575, 'x': -0.10353638231754303, 'y': 0.04896881431341171, 'z': 0.029650533571839333, 'vx': -0.01827007532119751, 'vy': 0.017359944060444832, 'vz': -0.0017551149940118194}
 {'mavpackettype': 'VIBRATION', 'time_usec': 4315575408, 'vibration_x': 0.005538811907172203, 'vibration_y': 0.003227994544431567, 'vibration_z': 0.0028239793609827757, 'clipping_0': 6, 'clipping_1': 5, 'clipping_2': 0}
 {'mavpackettype': 'BATTERY_STATUS', 'id': 0, 'battery_function': 0, 'type': 0, 'temperature': 32767, 'voltages': [12587, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535], 'current_battery': 0, 'current_consumed': 0, 'energy_consumed': 0, 'battery_remaining': 100, 'time_remaining': 0, 'charge_state': 1, 'voltages_ext': [0, 0, 0, 0], 'mode': 0, 'fault_bitmask': 0}
+
+
+x11 forwarding
+https://stackoverflow.com/questions/65468655/vs-code-remote-x11-cant-get-display-while-connecting-to-remote-server
+https://www.reddit.com/r/learnpython/comments/13hh5hv/issues_with_keyboard_module_in_virtual_environment/
