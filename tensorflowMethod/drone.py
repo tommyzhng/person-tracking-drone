@@ -7,7 +7,8 @@ from simple_pid import PID
 class DroneFunctions:
     def __init__(self, testing = False):
         if testing == True:
-            connectionString = socket.gethostbyname_ex(socket.gethostname())[-1][1] + ":14550"
+            #connectionString = socket.gethostbyname_ex(socket.gethostname())[-1][1] + ":14550"
+            connectionString = "192.168.124.246:14550"
         else:
             connectionString = "/dev/ttyAMA0"
         print(connectionString)
