@@ -67,3 +67,7 @@ max thrust of one motor:
 x11 forwarding
 https://stackoverflow.com/questions/65468655/vs-code-remote-x11-cant-get-display-while-connecting-to-remote-server
 https://www.reddit.com/r/learnpython/comments/13hh5hv/issues_with_keyboard_module_in_virtual_environment/
+
+
+use windows computer ip
+export DISPLAY=192.168.124.136:10.0
