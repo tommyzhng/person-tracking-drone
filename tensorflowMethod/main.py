@@ -5,7 +5,7 @@ from keyboard import KeyboardListener
 import time
 
 #OpenCV Inits
-drone = DroneFunctions(testing=True)
+drone = DroneFunctions(testing=False)
 capture = GetVideo().start()
 tracker = Tracker()
 keyboard = KeyboardListener(drone)

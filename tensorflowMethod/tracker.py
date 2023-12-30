@@ -9,6 +9,8 @@ import os
 class GetVideo(): #get video from another thread to reduce latency
     def __init__(self) -> None:
         self.stream = cv.VideoCapture(0)
+        self.stream.set(3, 640)
+        self.stream.set(4, 480)
         (self.success, self.frame) = self.stream.read() #read the first frame
         self.stopped = False
 
@@ -57,7 +59,6 @@ class Tracker():
         self.freq = cv.getTickFrequency()  
 
     def process(self, frame):
-        frame = cv.resize(frame, (640,480))
         frame = cv.flip(frame, 1)
         #frame = cv.rotate(frame, cv.ROTATE_90_CLOCKWISE)
         b, h = frame.shape[1], frame.shape[0]
