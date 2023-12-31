@@ -62,8 +62,8 @@ class DroneFunctions:
             mavutil.mavlink.MAV_FRAME_BODY_NED,
             0b011111000111,
             0, 0, 0,
-            velocity, 0, 0,
             0, 0, 0,
-            0, xDiff)
+            0, 0, 0,
+            0, 0)
         self.vehicle.send_mavlink(msg)
         #self.vehicle.flush()
