@@ -12,7 +12,7 @@ class KeyboardListener():
         if key == 's':
             self.start_tracking = True
         if key == 't':
-            self.drone.arm_and_takeoff(3)
+            self.drone.arm_and_takeoff(2)
         if key == 'l':
             self.drone.vehicle.mode = VehicleMode("LAND")
 
