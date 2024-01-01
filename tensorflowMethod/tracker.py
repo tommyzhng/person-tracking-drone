@@ -81,7 +81,7 @@ class Tracker():
         center = (0,0)
         area = 0
         if (self.labels[int(classes[0])] == "person"): #run if detected person
-            if (confidence[0] > 0.5 and confidence[0] < 1.0): #if confidence is high, run the bounding boxes
+            if (confidence[0] > 0.55 and confidence[0] < 1.0): #if confidence is high, run the bounding boxes
                     minx, maxx = int(max(1,(bbox[0][1] * b))), int(min(b,(bbox[0][3] * b)))
                     miny, maxy = int(max(1,(bbox[0][0] * h))), int(min(h,(bbox[0][2] * h)))
                     center = round((maxx + minx)/2, 3), round((maxy + miny)/2, 3)
