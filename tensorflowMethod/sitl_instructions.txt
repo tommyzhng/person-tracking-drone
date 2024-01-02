@@ -70,11 +70,11 @@ https://www.reddit.com/r/learnpython/comments/13hh5hv/issues_with_keyboard_modul
 
 
 use windows **computer ip**
-export DISPLAY=192.168.124.136:10.0
+export DISPLAY=192.168.210.136:10.0
 
 port forwarding for mission planner
-192.168.124.136:5000
+192.168.210.136:5000
 
-mavproxy.py --master=/dev/ttyAMA0 --out=192.168.124.136:5000 --baudrate=921600
+mavproxy.py --master=/dev/ttyAMA0 --out=192.168.210.136:5000 --baudrate=921600
 
 connect on port 5000 on mission planner
