@@ -39,8 +39,8 @@ class Tracker():
             from tensorflow.lite.python.interpreter import Interpreter
 
         CWD = os.getcwd()
-        MODELPATH = os.path.join(CWD,"model",'detect.tflite')
-        LABELPATH = os.path.join(CWD,"model", 'labelmap.txt')
+        MODELPATH = os.path.join(CWD,"person_detection",'detect.tflite')
+        LABELPATH = os.path.join(CWD,"person_detection", 'labelmap.txt')
 
         #get rid of "\n" when reading label files
         self.labels = [line.strip() for line in (open(LABELPATH, 'r')).readlines()]
