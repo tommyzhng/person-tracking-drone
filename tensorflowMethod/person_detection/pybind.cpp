@@ -90,7 +90,7 @@ class MyTracker {
                     area = std::abs(100.0 * ((static_cast<float>(maxy) / h) - (static_cast<float>(miny) / h)));
 
                     
-                    textStream << std::fixed << std::setprecision(1) << area;
+                    textStream << std::fixed << std::setprecision(2) << area;
                     cv::putText(frame, "Area: " + textStream.str() + "%", cv::Point(30, 100), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
                 }
             }
@@ -129,7 +129,7 @@ class MyTracker {
                 // Draw line connecting two points
                 cv::line(frame, cv::Point(frame.cols/2, frame.rows/2), cv::Point(center.x, center.y), cv::Scalar(255, 255, 0), 10);
                 differences = 0.5 - (static_cast<float>(center.x) / static_cast<float>(frame.cols));
-                textStream << std::fixed << std::setprecision(1) << differences * 100;
+                textStream << std::fixed << std::setprecision(2) << differences * 100;
                 cv::putText(frame, "X Delta = " + textStream.str() + "%", cv::Point(30, 150), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
             }
             textStream.str("");

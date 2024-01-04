@@ -92,3 +92,4 @@ swig -c++ -I/home/pi/opencv-swig/lib -I/usr/local/include/opencv4 -python person
 g++ -fPIC -c person_detection.cpp person_tracking_wrap.cxx -I/usr/include/python3.9 `pkg-config --cflags --libs opencv4` -L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64 -ltensorflow-lite
 g++ -shared person_detection.o person_tracking_wrap.o -o _person_tracking.so -L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64 -ltensorflow-lite `pkg-config --cflags --libs opencv4`
 
+python setup.py build_ext --inplace --force
