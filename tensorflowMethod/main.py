@@ -4,21 +4,21 @@ from drone import DroneFunctions, VehicleMode
 from keyboard import KeyboardListener
 from person_detection import person_tracker
 import time
-import os
-import numpy as np
 
-#OpenCV Inits
+
 drone = DroneFunctions(testing=True)
 capture = GetVideo().start()
-#tracker = Tracker()
 keyboard = KeyboardListener(drone)
-tracker = person_tracker.MyTracker()
-tracker.init()
+on_windows = False
+if on_windows == True:
+    tracker = Tracker()
+else:
+    tracker = person_tracker.MyTracker()
+    tracker.init()
+
 keyboard.start()
 
 print("Setup complete. Press 's' to start tracking.")
-
-
 
 #Main Loop
 while True:
