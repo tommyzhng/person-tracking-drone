@@ -10,7 +10,7 @@
 ## Key Functionalities and Features
 
 * Able to detect and follow a person using Tensorflow Lite & the ssd-mobilenet-v1 model.
-* Smoothly determines how much correction is needed by utilizing two PD controllers.
+* Smoothly determines how much correction is needed by utilizing two PID controllers.
 * Code can run on bare Raspberry Pi 4b (no accelerator!) while achieving speeds of ~20fps by integrating C++ code for object detection.
 
 ## Explanation of Project
