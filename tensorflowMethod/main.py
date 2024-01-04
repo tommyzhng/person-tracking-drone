@@ -2,17 +2,19 @@ import cv2 as cv
 from tracker import GetVideo, Tracker
 from drone import DroneFunctions, VehicleMode
 from keyboard import KeyboardListener
-from person_detection import person_tracker
+
 import time
 
 
 drone = DroneFunctions(testing=True)
 capture = GetVideo().start()
 keyboard = KeyboardListener(drone)
-on_windows = False
+on_windows = True
+
 if on_windows == True:
     tracker = Tracker()
 else:
+    from person_detection import person_tracker
     tracker = person_tracker.MyTracker()
     tracker.init()
 
