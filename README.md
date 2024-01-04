@@ -10,6 +10,7 @@
 ## Key Functionalities and Features
 
 * Able to detect and follow a person using Tensorflow Lite & the ssd-mobilenet-v1 model.
+* Smoothly determines how much correction is needed by utilizing two PD controllers.
 * Code can run on bare Raspberry Pi 4b (no accelerator!) while achieving speeds of ~20fps by integrating C++ code for object detection.
 
 ## Explanation of Project
@@ -41,11 +42,11 @@ The code was tested with the Gazebo simulator:
 
 Direction / Yaw: 
 
-The code returns the center of a person by taking the average of the X coordinates of the bounding boxes. Then it calculates the percentage of pixels that it is away from the center of the screen. This is passed to a PID controller and then to a drone function to turn the drone.
+The code returns the center of a person by taking the average of the X coordinates of the bounding boxes. Then it calculates the percentage of pixels that it is away from the center of the screen. This is passed to a PD controller and then to a drone function to turn the drone.
 
 Forward / Backwards Movement: 
 
-The code uses the bounding box height to determine how far a person is. It calculates a relative area using the Y distance of the bounding box. The Y axis was chosen over the X distance since the latter can be easily manipulated by spreading arms. This is passed to another PID controller to determine the drone's movement.
+The code uses the bounding box height to determine how far a person is. It calculates a relative area using the Y distance of the bounding box. The Y axis was chosen over the X distance since the latter can be easily manipulated by spreading arms. This is passed to a P controller to determine the drone's movement.
 
 **Person Tracking Demo:** 
 
