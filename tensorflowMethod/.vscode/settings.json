@@ -85,7 +85,8 @@
         "numpy.h": "c",
         "model.h": "c",
         "ocl.hpp": "c",
-        "highgui.hpp": "c"
+        "highgui.hpp": "c",
+        "csignal": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

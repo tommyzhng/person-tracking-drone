@@ -14,8 +14,6 @@
 #include "tensorflow/lite/string_util.h"
 #include "tensorflow/lite/model.h"
 #include <Python.h>
-#include <boost/python.hpp>
-#include <pyboostcvconverter/pyboostcvconverter.hpp>
 
 // Include your MyTracker class definition here
 class MyTracker {
@@ -64,7 +62,7 @@ class MyTracker {
             memcpy(inputTensor->data.raw, frameResized.data, width*height*3);
 
             interpreter->SetAllowFp16PrecisionForFp32(true);
-            interpreter->SetNumThreads(4); //quad core
+            interpreter->SetNumThreads(4);
 
             interpreter->Invoke();
 
@@ -79,10 +77,10 @@ class MyTracker {
                 std::cout << "score: " << detection_scores[0] << std::endl;
                 if (detection_scores[0] > 0.55 && detection_scores[0] < 1.0) {
                     int det_index = (int)detection_classes[0] + 1;
-                    float miny = detection_locations[4*0]*h;
-                    float minx = detection_locations[4*0+1]*b;
-                    float maxy = detection_locations[4*0+2]*h;
-                    float maxx = detection_locations[4*0+3]*b;
+                    float miny = detection_locations[0]*h;
+                    float minx = detection_locations[1]*b;
+                    float maxy = detection_locations[2]*h;
+                    float maxx = detection_locations[3]*b;
 
                     center.x = static_cast<int>(round((maxx + minx) / 2.0));
                     center.y = static_cast<int>(round((maxy + miny) / 2.0));
@@ -90,12 +88,15 @@ class MyTracker {
                     cv::circle(frame, center, 15, cv::Scalar(0, 0, 255), -1);
                     cv::rectangle(frame, cv::Point(minx, miny), cv::Point(maxx, maxy), cv::Scalar(0, 255, 0), 2);
                     area = std::abs(100.0 * ((static_cast<float>(maxy) / h) - (static_cast<float>(miny) / h)));
+
+                    
+                    textStream << std::fixed << std::setprecision(1) << area;
+                    cv::putText(frame, "Area: " + textStream.str() + "%", cv::Point(30, 100), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
                 }
             }
-
+            
             double differences = distanceFromCenter(frame, center);
             cv::putText(frame, "FPS: " + std::to_string(int(frameRateCalc)), cv::Point(30, 50), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
-            cv::putText(frame, "Area: " + std::to_string(round(area * 100) / 100) + "%", cv::Point(30, 100), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
             
             // Calculate frame rate for next loop
             int64 t2 = cv::getTickCount();
@@ -110,12 +111,16 @@ class MyTracker {
         TfLiteTensor* outputTensor;
         std::unique_ptr<tflite::FlatBufferModel> model;
         std::vector<std::string> labels;
+        std::ostringstream textStream;
         int height, width;
         double frameRateCalc;
         double freq;
+        
 
         double distanceFromCenter(cv::Mat& frame, cv::Point center) {
             double differences = 0.0;
+            textStream.str("");
+            textStream.clear();
             
             if (center != cv::Point(0, 0)) {
                 // Draw center
@@ -124,9 +129,11 @@ class MyTracker {
                 // Draw line connecting two points
                 cv::line(frame, cv::Point(frame.cols/2, frame.rows/2), cv::Point(center.x, center.y), cv::Scalar(255, 255, 0), 10);
                 differences = 0.5 - (static_cast<float>(center.x) / static_cast<float>(frame.cols));
-                cv::putText(frame, "X Delta = " + std::to_string(round(differences*100*100)/100) + "%", cv::Point(30, 150), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
+                textStream << std::fixed << std::setprecision(1) << differences * 100;
+                cv::putText(frame, "X Delta = " + textStream.str() + "%", cv::Point(30, 150), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 1, cv::LINE_AA);
             }
-            
+            textStream.str("");
+            textStream.clear();
             return differences;
         }
 };
