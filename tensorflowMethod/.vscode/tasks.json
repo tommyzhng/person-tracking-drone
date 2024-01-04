@@ -5,12 +5,15 @@
             "label": "C/C++: gcc build active file",
             "command": "g++",
             "args": [
+                "-std=c++17",
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "`pkg-config --cflags --libs opencv4`"
+                "`pkg-config --cflags --libs opencv4`",
+                "-L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64",
+                "-ltensorflow-lite"
             ],
 
             
