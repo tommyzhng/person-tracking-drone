@@ -1,3 +1,8 @@
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
+
+// Include necessary headers
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -9,14 +14,16 @@
 #include "tensorflow/lite/string_util.h"
 #include "tensorflow/lite/model.h"
 #include <Python.h>
+#include <boost/python.hpp>
+#include <pyboostcvconverter/pyboostcvconverter.hpp>
 
-
+// Include your MyTracker class definition here
 class MyTracker {
     public:
         void init() {
             // Initialize variables
-            const std::string modelPath = "./detect.tflite";
-            const std::string labelPath = "./labelmap.txt";
+            const std::string modelPath = "./person_detection/detect.tflite";
+            const std::string labelPath = "./person_detection/labelmap.txt";
 
             // Load labels
             std::ifstream labelFile(labelPath);
@@ -93,8 +100,7 @@ class MyTracker {
             // Calculate frame rate for next loop
             int64 t2 = cv::getTickCount();
             double time1 = (t2 - t1) / freq;
-            frameRateCalc = 1 / time1;
-            frame = py::array({height, width, static_cast<int>(frame.channels())}, frame.data)            
+            frameRateCalc = 1 / time1;      
             return {frame, differences, area};
         }
 
@@ -123,4 +129,63 @@ class MyTracker {
             
             return differences;
         }
-    };
+};
+
+namespace py = pybind11;
+
+// convert an np.array to a cv::Mat
+cv::Mat from_array(const py::array& ar) {
+    if (!ar.dtype().is(py::dtype::of<uchar>())) {
+        std::cout << "ERROR unsupported dtype!" << std::endl;
+        return cv::Mat();
+    }
+
+    auto shape = ar.shape();
+    int rows = shape[0];
+    int cols = shape[1];
+    int channels = shape[2];
+    int type = CV_MAKETYPE(CV_8U, channels); // CV_8UC3
+    cv::Mat mat = cv::Mat(rows, cols, type);
+    memcpy(mat.data, ar.data(), sizeof(uchar) * rows * cols * channels);
+
+    return mat;
+}
+
+py::array to_array(const cv::Mat& im) {
+    const ssize_t channels = im.channels();
+    const ssize_t height = im.rows;
+    const ssize_t width = im.cols;
+    const ssize_t dim = sizeof(uchar) * height * width * channels;
+    auto data = new uchar[dim];
+    std::copy(im.data, im.data + dim, data);
+    return py::array_t<uchar>(
+        py::buffer_info(
+            data,
+            sizeof(uchar), //itemsize
+            py::format_descriptor<uchar>::format(),
+            channels, // ndim
+            std::vector<ssize_t> { height, width, channels }, // shape
+            std::vector<ssize_t> { width * channels, channels, sizeof(uchar) } // strides
+        ),
+        py::capsule(data, [](void* f){
+            // handle releasing data
+            delete[] reinterpret_cast<uchar*>(f);
+        })
+    );
+}
+
+PYBIND11_MODULE(person_tracker, m) {
+    py::class_<MyTracker>(m, "MyTracker")
+        .def(py::init()) // Binding the constructor
+        .def("init", &MyTracker::init) // Binding the init method
+        // Bind other methods of MyTracker as needed
+        .def("process", [](MyTracker& self, py::array_t<unsigned char> &frame) {
+            cv::Mat frameMat = from_array(frame);
+    
+            //Process
+            auto result = self.process(frameMat);
+
+            py::array_t<unsigned char> frameOut = to_array(frameMat);
+            return py::make_tuple(frameOut, std::get<1>(result), std::get<2>(result));
+    },  py::arg("frame"));
+}

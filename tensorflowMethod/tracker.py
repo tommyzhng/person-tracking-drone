@@ -117,7 +117,3 @@ class Tracker():
 
             return differences
     
-
-        
-
-

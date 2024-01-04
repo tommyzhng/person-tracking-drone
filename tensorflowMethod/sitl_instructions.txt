@@ -70,7 +70,7 @@ https://www.reddit.com/r/learnpython/comments/13hh5hv/issues_with_keyboard_modul
 
 
 use windows **computer ip**
-export DISPLAY=192.168.210.136:10.0
+export DISPLAY=192.168.66.136:10.0
 
 port forwarding for mission planner
 192.168.210.136:5000
@@ -78,3 +78,17 @@ port forwarding for mission planner
 mavproxy.py --master=/dev/ttyAMA0 --out=192.168.210.136:5000 --baudrate=921600
 
 connect on port 5000 on mission planner
+
+Differences: -0.0650470219435737
+Area: 88.30897703549061
+
+
+score: 0.75
+center: [361, 269]
+Differences: 0.5
+Area: 88.7821
+
+swig -c++ -I/home/pi/opencv-swig/lib -I/usr/local/include/opencv4 -python person_tracking.i 
+g++ -fPIC -c person_detection.cpp person_tracking_wrap.cxx -I/usr/include/python3.9 `pkg-config --cflags --libs opencv4` -L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64 -ltensorflow-lite
+g++ -shared person_detection.o person_tracking_wrap.o -o _person_tracking.so -L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64 -ltensorflow-lite `pkg-config --cflags --libs opencv4`
+

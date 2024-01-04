@@ -4,7 +4,10 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/local/include/opencv4"
+                "/usr/local/include/opencv4",
+                "/home/pi/drone/person-tracking-drone/tensorflowMethod/person_detection",
+                "/usr/include/c++/10",
+                "/usr/include/aarch64-linux-gnu/c++/10"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
