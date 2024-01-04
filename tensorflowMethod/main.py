@@ -2,14 +2,12 @@ import cv2 as cv
 from tracker import GetVideo, Tracker
 from drone import DroneFunctions, VehicleMode
 from keyboard import KeyboardListener
-
 import time
-
 
 drone = DroneFunctions(testing=True)
 capture = GetVideo().start()
 keyboard = KeyboardListener(drone)
-on_windows = True
+on_windows = False
 
 if on_windows == True:
     tracker = Tracker()
