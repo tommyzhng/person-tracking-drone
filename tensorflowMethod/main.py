@@ -4,12 +4,12 @@ from drone import DroneFunctions, VehicleMode
 from keyboard import KeyboardListener
 import time
 
-drone = DroneFunctions(testing=True)
+drone = DroneFunctions(testing=False)
 capture = GetVideo().start()
 keyboard = KeyboardListener(drone)
-on_windows = False
+on_windows = True
 
-if on_windows == True:
+if on_windows == False:
     tracker = Tracker()
 else:
     from person_detection import person_tracker
@@ -26,12 +26,18 @@ while True:
         frame = capture.frame
         frame, differences, area = tracker.process(frame)
         xDiff, velocity = drone.calculate_movement(differences, area)
-        print(f"{round(differences*100, 3)} %")
-        print(f"xDiff: {xDiff}, velocity: {velocity}")
+        #print(f"{round(differences*100, 3)} %")
+        #print(f"xDiff: {xDiff}, velocity: {velocity}")
         cv.imshow("tracker", frame)
+
+        if drone.vehicle.mode == VehicleMode("LAND"):
+            drone.send_movement(0, 0)
+            print("landing...")
+            break
 
         #if q is pressed, quit
         if cv.waitKey(1) == ord('q'):
+            drone.send_movement(0, 0)
             drone.vehicle.mode = VehicleMode("LAND")
             capture.stop()
             break

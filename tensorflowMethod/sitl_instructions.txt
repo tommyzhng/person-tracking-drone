@@ -1,38 +1,44 @@
-CHECK IP ADDRESS!!
 
-mission planner: 
-cd ~/missionplanner;mono MissionPlanner.exe
+Gazebo Testing:
 
-Workflow:
-
-Run Simulation
-Terminal 1
+1. Open gazebo on one terminal
 gazebo --verbose ~/ardupilot_gazebo/worlds/iris_arducopter_runway.world
 
-Terminal 2
+2. Run sim_vehicle.py on another terminal
 cd ~/ardupilot/ArduCopter/
 sim_vehicle.py -v ArduCopter -f gazebo-iris --console
 or
-sim_vehicle.py -v ArduCopter -L SCHOOL --console
+sim_vehicle.py -v ArduCopter -L SCHOOL --console   (no gazebo)
 
-if script is not connecting:
+3. if script is not connecting:
 type "output" to see what addresses mavlink messages are sent to
-"output add" current ip address from ipconfig
+"output add" current ip address from ipconfig on windows with port :14550
 
-output add 10.22.217.132:14550
-output add 192.168.1.4:14550
 
-new
-output add 100.66.208.150:14550
+Test flying IRL:
 
-mavproxy.py --master=/dev/ttyAMA0,921000
+1. Make sure display is set to the X11 forwarded display
+use windows **computer ip**
+export DISPLAY=192.168.251.136:10.0
 
-BAUD IS 921
+2. Start mavproxy forwarding and connect to that port with code
+mavproxy.py --master=/dev/ttyAMA0 --baudrate 921600 --out 127.0.0.1:14550 --out=192.168.251.136:14550
+connect on port 5000 on mission planner
+
+3. Run code
+
+Other Info:
+
+How to run setup.py:
+python setup.py build_ext --inplace --force
+
+x11 forwarding
+https://stackoverflow.com/questions/65468655/vs-code-remote-x11-cant-get-display-while-connecting-to-remote-server
+https://www.reddit.com/r/learnpython/comments/13hh5hv/issues_with_keyboard_module_in_virtual_environment/
 
 gazebo iris drone properties:
 mass: 1.535 kg
 max thrust of one motor: 
-
 
 {'mavpackettype': 'ATTITUDE', 'time_boot_ms': 4315575, 'roll': -0.0006370187038555741, 'pitch': 0.0014489403693005443, 'yaw': 0.056336987763643265, 'rollspeed': 0.0002992661902680993, 'pitchspeed': 0.00026806152891367674, 'yawspeed': 0.0007550379377789795}
 {'mavpackettype': 'GLOBAL_POSITION_INT', 'time_boot_ms': 4315575, 'lat': -353632630, 'lon': 1491652379, 'alt': 583960, 'relative_alt': 190, 'vx': -1, 'vy': 1, 'vz': 0, 'hdg': 322}
@@ -64,32 +70,3 @@ max thrust of one motor:
 {'mavpackettype': 'BATTERY_STATUS', 'id': 0, 'battery_function': 0, 'type': 0, 'temperature': 32767, 'voltages': [12587, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535], 'current_battery': 0, 'current_consumed': 0, 'energy_consumed': 0, 'battery_remaining': 100, 'time_remaining': 0, 'charge_state': 1, 'voltages_ext': [0, 0, 0, 0], 'mode': 0, 'fault_bitmask': 0}
 
 
-x11 forwarding
-https://stackoverflow.com/questions/65468655/vs-code-remote-x11-cant-get-display-while-connecting-to-remote-server
-https://www.reddit.com/r/learnpython/comments/13hh5hv/issues_with_keyboard_module_in_virtual_environment/
-
-
-use windows **computer ip**
-export DISPLAY=192.168.66.136:10.0
-
-port forwarding for mission planner
-192.168.210.136:5000
-
-mavproxy.py --master=/dev/ttyAMA0 --out=192.168.210.136:5000 --baudrate=921600
-
-connect on port 5000 on mission planner
-
-Differences: -0.0650470219435737
-Area: 88.30897703549061
-
-
-score: 0.75
-center: [361, 269]
-Differences: 0.5
-Area: 88.7821
-
-swig -c++ -I/home/pi/opencv-swig/lib -I/usr/local/include/opencv4 -python person_tracking.i 
-g++ -fPIC -c person_detection.cpp person_tracking_wrap.cxx -I/usr/include/python3.9 `pkg-config --cflags --libs opencv4` -L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64 -ltensorflow-lite
-g++ -shared person_detection.o person_tracking_wrap.o -o _person_tracking.so -L/home/pi/tensorflow/tensorflow/lite/tools/make/gen/linux_aarch64 -ltensorflow-lite `pkg-config --cflags --libs opencv4`
-
-python setup.py build_ext --inplace --force
