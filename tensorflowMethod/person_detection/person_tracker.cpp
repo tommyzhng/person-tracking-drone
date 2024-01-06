@@ -74,8 +74,7 @@ class MyTracker {
             float area = 0.0;
 
             if (labels[static_cast<int>(detection_classes[0])] == "person") {
-                std::cout << "score: " << detection_scores[0] << std::endl;
-                if (detection_scores[0] > 0.55 && detection_scores[0] < 1.0) {
+                if (detection_scores[0] > 0.45 && detection_scores[0] < 1.0) {
                     int det_index = (int)detection_classes[0] + 1;
                     float miny = detection_locations[0]*h;
                     float minx = detection_locations[1]*b;
