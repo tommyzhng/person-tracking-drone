@@ -8,18 +8,17 @@ class DroneFunctions:
     def __init__(self, testing = False):
         if testing == True:
             #connectionString = socket.gethostbyname_ex(socket.gethostname())[-1][1] + ":14550"
-            connectionString = "192.168.66.246:14550"
+            connectionString = "192.168.251.246:14550"
         else:
-            connectionString = "/dev/ttyAMA0"
+            connectionString = "udp:127.0.0.1:14550"
         print(connectionString)
         self.vehicle = connect(connectionString, baud=921600)
-
         self.target_diff = 0
-        self.target_area = 40
+        self.target_area = 25
 
         self.configure_pid(
             #yaw pid
-            0.3, 0.0, 0.05,
+            1, 0.0, 0.05,
             #forward pid 
             (2/(self.target_area*2-self.target_area)) * 0.5, 0.0, 0.0
             )
@@ -42,7 +41,7 @@ class DroneFunctions:
 
     def configure_pid(self, kp_y, ki_y, kd_y, kp_f, ki_f, kd_f):
         MAX_HEADING_CMD = 0.25
-        MAX_VELOCITY_CMD = 2
+        MAX_VELOCITY_CMD = 2.5
         self.pid_yaw = PID(kp_y, ki_y, kd_y, setpoint=self.target_diff)
         self.pid_yaw.output_limits = (-MAX_HEADING_CMD, MAX_HEADING_CMD)
 

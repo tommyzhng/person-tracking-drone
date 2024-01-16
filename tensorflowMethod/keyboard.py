@@ -10,10 +10,12 @@ class KeyboardListener():
     def on_press(self, key):
         global start_tracking
         if key == 's':
+            self.drone.vehicle.mode = VehicleMode("GUIDED")
             self.start_tracking = True
         if key == 't':
-            self.drone.arm_and_takeoff(2)
+            self.drone.arm_and_takeoff(3)
         if key == 'l':
+            self.drone.send_movement(0, 0)
             self.drone.vehicle.mode = VehicleMode("LAND")
 
     def listen(self):
