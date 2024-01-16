@@ -30,7 +30,7 @@ opencv_include_dirs, opencv_library_dirs, opencv_libraries = find_opencv()
 ext_modules = [
     Extension(
         'person_tracker',
-        ['pybind.cpp'],
+        ['person_tracker.cpp'],
         include_dirs=[pybind11.get_include(), '/home/pi/pyboostcvconverter/include', '/home/pi/drone/person-tracking-drone/tensorflowMethod/.venv/lib/python3.9/site-packages/numpy/core/include', '/home/pi/drone/person-tracking-drone/tensorflowMethod/person_detection'] + opencv_include_dirs,
         library_dirs= opencv_library_dirs + ['/usr/local/lib'],
         libraries= opencv_libraries + ["tensorflow-lite"],
