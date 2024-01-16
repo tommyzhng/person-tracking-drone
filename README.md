@@ -40,6 +40,15 @@ The code was tested with the Gazebo simulator (old python code):
   <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20in%20gazebo.gif">
 </p>
 
+
+New implemented C++ Code (Very badly tuned PID + windy day):
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/tommyzhng/person-tracking-drone/blob/master/Videos%20and%20Pictures/readme%20gifs/c_tracking.gif">
+</p>
+
+
+
+
 Direction / Yaw: 
 
 The code returns the center of a person by taking the average of the X coordinates of the bounding boxes. Then it calculates the percentage of pixels that it is away from the center of the screen. This is passed to a PD controller and then to a drone function to turn the drone.
