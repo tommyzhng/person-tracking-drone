@@ -41,7 +41,7 @@ The code was tested with the Gazebo simulator (old python code):
 </p>
 
 
-New implemented C++ Code (Very badly tuned PID + windy day):
+New implemented C++ Code trying to maintain 25% are & 0% x_delta (Very badly tuned PID + windy day):
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/tommyzhng/person-tracking-drone/blob/master/Videos%20and%20Pictures/readme%20gifs/c_tracking.gif">
 </p>
