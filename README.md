@@ -34,11 +34,20 @@ The code is assembled from main.py, drone.py, tracker.py, keyboard.py and a C++ 
 
 * C++ person_tracking.so - optimized version of person detection that runs at a peak of 20fps on a bare Raspberry Pi (no USB accelerator)
 
-The code was tested with the Gazebo simulator:
+The code was tested with the Gazebo simulator (old python code):
 
 <p align="center">
   <img width="80%" height="80%" src="https://github.com/tommyzhng/drone/blob/master/Videos%20and%20Pictures/readme%20gifs/person%20tracking%20in%20gazebo.gif">
 </p>
+
+
+New implemented C++ Code trying to maintain 25% area & 0% x_delta (Very badly tuned PID + windy day):
+<p align="center">
+  <img width="80%" height="80%" src="https://github.com/tommyzhng/person-tracking-drone/blob/master/Videos%20and%20Pictures/readme%20gifs/c_tracking.gif">
+</p>
+
+
+
 
 Direction / Yaw: 
 

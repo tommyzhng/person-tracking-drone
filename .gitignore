@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 
 
+# Analysis File
+Analysis/
+
 # Distribution / packaging
 .Python
 build/
