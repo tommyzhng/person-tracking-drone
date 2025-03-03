@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   cv_bridge
+  roslib
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,10 +105,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES person_tracking_drone
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+   INCLUDE_DIRS include
+   LIBRARIES person_tracking_drone tensorflowlite
+   CATKIN_DEPENDS roscpp rospy std_msgs
 )
 
 ###########
@@ -121,14 +121,22 @@ include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
   include/person_tracking_drone
+  ${CMAKE_SOURCE_DIR}/include
+  ${CMAKE_SOURCE_DIR}/include/tensorflow
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
 )
 
+link_directories(${CMAKE_SOURCE_DIR}/lib)
+
+
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/person_tracking_drone.cpp
-# )
+add_library(person_tracking_drone
+  src/person_tracking.cpp
+)
+target_link_libraries(person_tracking_drone ${catkin_LIBRARIES} tensorflowlite)
+
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -139,7 +147,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(person_tracking_node src/person_tracking_node.cpp)
-target_link_libraries(person_tracking_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(person_tracking_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES} ${CMAKE_SOURCE_DIR}/lib/libtensorflowlite.so person_tracking_drone)
 add_dependencies(person_tracking_node ${catkin_EXPORTED_TARGETS})
 
 ## Rename C++ executable without prefix

@@ -1,10 +1,13 @@
 #include "person_tracking.hpp"
 
-ros::NodeHandle nh;
-PersonTracking personTracking(nh);
-
-while(ros::ok())
+int main(int argc, char** argv)
 {
-    personTracking.Process();
-    ros::spinOnce();
+    ros::init(argc, argv, "person_tracking_node");
+    ros::NodeHandle nh;
+    PersonTracking personTracking(nh);
+    while (ros::ok())
+    {
+        personTracking.Update();
+    }
+    return 0;
 }
