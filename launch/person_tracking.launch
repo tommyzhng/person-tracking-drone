@@ -1,0 +1,13 @@
+<launch>
+
+<include file="$(find gstreamer_ros_bridge)/launch/v4l2.launch">
+<arg name="camera_format" value="BGR"/>
+<arg name="gst_topic" value="/person_tracking/detections_image"/>
+<arg name="gst_ip" value="100.64.0.1"/>
+<arg name="gst_width" value="160"/>
+<arg name="gst_height" value="120"/>
+</include>
+
+<node pkg="person_tracking_drone" type="person_tracking_node" name="person_tracking_node" output="screen">
+</node>
+</launch>
