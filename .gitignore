@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-
+apikey.txt
 # Analysis File
 Analysis/
 
