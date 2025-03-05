@@ -16,7 +16,7 @@ async def main():
     with open("apikey.txt", "r") as f:
         api_key = f.read().strip()
 
-    flight_stack = DroneStack()
+    flight_stack = DroneStack(rate=rate)
     machine = DroneStateMachine(flight_stack)
     agent = AgenticControl(flight_stack, machine, api_key)
     audio = AudioTools()

@@ -1,16 +1,16 @@
 ## file is based on https://github.com/run-llama/openai_realtime_client/blob/main/openai_realtime_client/client/realtime_client.py
 
 from drone_stack import DroneStack
-from drone_state_machine import DroneStateMachine
+from drone_state_machine import DroneStateMachine, States
 import rospy
 
 # gpt-4o realtime
-from openai import OpenAI
 import asyncio
 import json
 import websockets
 from llm_control.tools import OpenAITools
 import base64
+import numpy as np
 
 
 class AgenticControl():
@@ -42,7 +42,7 @@ class AgenticControl():
         self._is_responding = False
 
     async def connect(self) -> None:
-        "websocket connection to realtime API"
+        """websocket connection to realtime API"""
         
         url = self.url
         headers = {
@@ -52,7 +52,8 @@ class AgenticControl():
 
         self.ws = await websockets.connect(url, extra_headers=headers)    
 
-        tools = [{'type': 'function', **t['function']} for t in self.tools]
+        # assign function type to tools and unpack function dictionary
+        tools = [{'type': 'function', **t['function']} for t in self.tools] 
 
         config = {
             "modalities": ["text"],
@@ -71,42 +72,17 @@ class AgenticControl():
                 "silence_duration_ms": 1000
             },
             "tools": tools,
-            "tool_choice": "auto",
+            "tool_choice": "required",
         }
-        print("setup config")
+        rospy.loginfo("setup config")
 
         await self.session_update(config)
 
     async def session_update(self, config) -> None:
-        "initialize session configuration"
+        """initialize session configuration"""
         event = {
             "type": "session.update",
             "session": config
-        }
-        await self.ws.send(json.dumps(event))
-
-    async def send_text(self, text: str) -> None:
-        """Send text message to the API."""
-        event = {
-            "type": "conversation.item.create",
-            "item": {
-                "type": "message",
-                "role": "user",
-                "content": [{
-                    "type": "input_text",
-                    "text": text
-                }]
-            }
-        }
-        await self.ws.send(json.dumps(event))
-        await self.create_response()
-
-    async def create_response(self) -> None:
-        event = {
-            "type": "response.create",
-            "response": {
-                "modalities": ["text", "audio"]
-            }
         }
         await self.ws.send(json.dumps(event))
 
@@ -143,7 +119,33 @@ class AgenticControl():
         self._response_id = None
         self._item_id = None
 
-    
+    async def handle_function_call(self, name, args):
+        if name == 'set_state':
+            state = args.get('state')
+            if state in list(States.__members__):  # safety check to prevent invalid state
+                self.state.switch_state(States[state])
+        elif name == 'enu_frame_control':
+            x = float(args.get('x', 0))
+            y = float(args.get('y', 0))
+            z = float(args.get('z', 0))
+            if (abs(x) > 5 or abs(y) > 5 or abs(z) > 5):
+                rospy.logerr("Command has exceeded 5 meter limit") # safety check
+                return
+            self.drone.position_command[0] += x
+            self.drone.position_command[1] += y
+            self.drone.position_command[2] += z
+            rospy.loginfo(f"ENU frame control: {self.drone.position_command}")
+        elif name == 'body_frame_control':
+            # x = float(args.get('x', 0))
+            # y = float(args.get('y', 0))
+            # z = float(args.get('z', 0))
+            # self.drone.position_command[0] += x
+            # self.drone.position_command[1] += y
+            # self.drone.position_command[2] += z
+            # rospy.loginfo(f"Body frame control: {self.drone.position_command}")
+            rospy.logwarn("Body frame control not implemented")
+        else:
+            rospy.logerr(f"Function {name} not found")
 
 
     async def handle_responses(self) -> None:
@@ -153,7 +155,7 @@ class AgenticControl():
                 event_type = event.get("type")
 
                 if event_type == "error":
-                    print(f"Chat Error: {event}")
+                    rospy.loginfo(f"Chat Error: {event}")
                     continue
                 elif event_type == "response.created":
                     self._response_id = event.get("response", {}).get("id")
@@ -166,24 +168,28 @@ class AgenticControl():
                     self._item_id = None
 
                 elif event_type == "input_audio_buffer.speech_started":
-                    print("\n[Speech detected]")
+                    rospy.loginfo("\n[Speech detected]")
                     if self._is_responding:
                         await self.handle_interruption()
                     # add interrupt function to stop audio playback when using audio feedback from api
                     
                 elif event_type == "input_audio_buffer.speech_stopped":
-                    print("\n[Speech ended]")
+                    rospy.loginfo("\n[Speech ended]")
+
+                elif event_type == "conversation.item.input_audio_transcription.completed":
+                    rospy.loginfo(f"\n[Transcription]: {event.get('transcript')}")
 
                 elif event_type == "response.content_part.done":
-                    print(f"\n[Text response]: {event.get('part', {}).get('text')}")
+                    rospy.loginfo(f"\n[Text response]: {event.get('part', {}).get('text')}")
                     
                 elif event_type == "response.function_call_arguments.done":
-                    print(f"\nFunction call: {event['call_id']}, event: {event['name']}, arguments: {json.loads(event['arguments'])}")
+                    await self.handle_function_call(event.get('name'), json.loads(event.get('arguments')))
+                    rospy.logwarn(f"\nFunction call: {json.loads(event['arguments'])}")
 
         except websockets.exceptions.ConnectionClosed:
-            print("Connection closed")
+            rospy.loginfo("Connection closed")
         except Exception as e:
-            print(f"Error: {e}")
+            rospy.loginfo(f"Error: {e}")
     
     async def close(self) -> None:
         "close websocket"
