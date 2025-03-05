@@ -1,0 +1,25 @@
+<launch>
+<arg name="camera_width" default="640" />
+    <arg name="camera_height" default="480" />
+    <arg name="camera_fps" default="30" />
+    <arg name="camera_format" default="GRAY8" />
+    <arg name="camera_location" default="/dev/video0" />
+    <arg name="camera_topic" default="/camera/image_rect" />
+
+<include file="$(find gstreamer_ros_bridge)/launch/standalone/gstreamer_cam.launch">
+    <arg name="camera_width" default="640" />
+    <arg name="camera_height" default="480" />
+    <arg name="camera_fps" default="30" />
+    <arg name="camera_format" default="GRAY8" />
+    <arg name="camera_location" default="/dev/video0" />
+    <arg name="camera_topic" default="/camera/image_rect" />
+    <arg name="custom_pipeline" default="
+        v4l2src device=$(arg camera_location) ! videoconvert ! videoscale ! video/x-raw,format=$(arg camera_format),width=$(arg camera_width),height=$(arg camera_height),framerate=$(arg camera_fps)/1 !
+        appsink name=sink sync=false drop=true max-buffers=1
+    "/>
+</include>
+
+
+<node pkg="person_tracking_drone" type="person_tracking_node" name="person_tracking_node" output="screen">
+</node>
+</launch>
