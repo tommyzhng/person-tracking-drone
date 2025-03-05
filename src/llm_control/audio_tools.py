@@ -75,7 +75,7 @@ class AudioTools():
             frames_per_buffer=self.chunk
         )
         
-        print("\nStreaming audio... Press 'q' to stop.")
+        print("\nStreaming audio...")
         
         while self.streaming:
             try:
