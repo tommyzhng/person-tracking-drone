@@ -61,6 +61,12 @@ class AudioTools():
         self.playback_thread = None
         self.stop_playback = False
 
+        # for i in range(self.audio.get_device_count()):
+        #     info = self.audio.get_device_info_by_index(i)
+        #     if info["maxInputChannels"] > 0:
+        #         print(f"Index {i}: {info['name']} (Input channels: {info['maxInputChannels']})")
+
+
     async def start_streaming(self, client: AgenticControl):
         """Start continuous audio streaming."""
         if self.streaming:

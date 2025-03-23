@@ -18,6 +18,7 @@ class DroneStateMachine():
     def __init__(self, drone_stack: DroneStack):
         self.state = States.IDLE
         self.drone = drone_stack
+        self.waypoint_reached = False
         
     def switch_state(self, new_state):
         self.state = new_state
@@ -71,6 +72,7 @@ class DroneStateMachine():
     def enu_frame_control(self):
         # send position target
         self.drone.send_position_target(self.drone.position_command[0], self.drone.position_command[1], self.drone.position_command[2])
+        
 
     def body_frame_control(self):
         # send body position target

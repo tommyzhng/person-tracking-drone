@@ -1,5 +1,5 @@
 import rospy
-from geometry_msgs.msg import PointStamped
+from geometry_msgs.msg import PointStamped, PoseStamped
 from mavros_msgs.msg import PositionTarget, State
 from mavros_msgs.srv import CommandBool, SetMode, SetModeRequest, CommandTOL
 from nav_msgs.msg import Odometry
@@ -15,7 +15,7 @@ class DroneStack():
         # subscribe to x and y data
         self.error_sub = rospy.Subscriber('tracking/error', PointStamped, self.error_callback)
         self.state_sub = rospy.Subscriber('mavros/state', State, self.state_callback)
-        self.position_sub = rospy.Subscriber('mavros/global_position/local', Odometry, self.position_callback)
+        self.position_sub = rospy.Subscriber('mavros/local_position/pose', PoseStamped, self.position_callback)
         self.position_pub = rospy.Publisher('mavros/setpoint_raw/local', PositionTarget, queue_size=1)
         
         # ROS services
@@ -43,7 +43,7 @@ class DroneStack():
         self.T_Kp = 0.1
         
     def position_callback(self, msg):
-        self.local_position = [msg.pose.pose.position.x, msg.pose.pose.position.y, msg.pose.pose.position.z]
+        self.local_position = [msg.pose.position.x, msg.pose.position.y, msg.pose.position.z]
         pass
 
     def state_callback(self, msg):
