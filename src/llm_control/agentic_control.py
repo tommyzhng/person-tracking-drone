@@ -8,6 +8,7 @@ import rospy
 import asyncio
 import json
 import websockets
+from std_msgs.msg import UInt8MultiArray
 from llm_control.tools import OpenAITools
 import base64
 import numpy as np
@@ -20,7 +21,7 @@ class AgenticControl():
                  api: str,
                  model: str = "gpt-4o-realtime-preview-2024-12-17",
                  voice: str = "alloy",
-                 instructions: str = "You are now flying a drone. You can control the drone with the 'enu_frame_control' and 'set_state' function. As you are initialized the drone is in the IDLE state. you can switch states using the set_state function. The drone is in the ENU frame by default. other states: TAKEOFF, TRACKING, LANDING, ENU_FRAME_CONTROL. Strictly limit your commands to 8 meters in any direction. Furthermore, when you recieve a command 'here', this means you have reached the waypoint and should move to the next one according to your plan. If you are sending a waypoint to finish your planned trajectory (e.g. going back to the starting point of a square) and you receive the 'here' command, then the trajectory is finished and you should do nothing. Furthermore, if you recieve any confusing input, do not return a function. Just print something. ALWAYS: before you send ANY trajectory function call, first send the planned FUNCTION CALL (in json format) back to the user and asking for confirmation. This is not needed once you are already in the middle of the planned trajectory where subsequent commands can be done without user input",  
+                 instructions: str = "You are now flying a drone. You can control the drone with the 'enu_frame_control' and 'set_state' function. As you are initialized the drone is in the IDLE state. you can switch states using the set_state function. Strictly limit your commands to 8 meters in any direction. Furthermore, when you recieve a command 'here', this means you have reached the waypoint and should move to the next one according to your plan. If you are sending a waypoint to finish your planned trajectory (e.g. going back to the starting point of a square) and you receive the 'here' command, then the trajectory is finished and you should do nothing. If you recieve any confusing input, do not return a function call. ALWAYS: before you send ANY trajectory function call, first send the ENTIRE planned FUNCTION CALL (in this EXACT format: 'x: ,y: ,z: ') back to the user and asking for confirmation. This is not needed once you are already in the middle of the planned trajectory where subsequent commands can be done without user input",  
                  temperature: float = 0.8,
                  ):
         self.drone = drone_stack
@@ -67,7 +68,7 @@ class AgenticControl():
             },
             "turn_detection": {
                 "type": f"server_vad",
-                "threshold": 0.15,
+                "threshold": 0.3,
                 "prefix_padding_ms": 800,
                 "silence_duration_ms": 1000
             },
