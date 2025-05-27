@@ -33,6 +33,7 @@ async def main():
 
         while not rospy.is_shutdown():
             machine.run_states()
+            await agent.check_status()
             await asyncio.sleep(1/rate)
 
     except Exception as e:
